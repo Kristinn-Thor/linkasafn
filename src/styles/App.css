@@ -2,12 +2,17 @@
   max-width: 1000px;
   margin: auto;
 }
-
+/*################################# HEADER ########################################*/
 .nav {
   display: flex;
+  justify-content: space-between;
   background-color: rgb(77, 77, 197);
   color: rgb(255, 248, 238);
   padding: 0.6rem;
+}
+
+.nav-flexGroup {
+  display: inline-flex;
 }
 
 .nav span {
@@ -27,7 +32,14 @@
 
 .link:hover {
   color: rgb(250, 162, 31);
+  cursor: pointer;
 }
+
+.login {
+  align-self: flex-end;
+}
+
+/*################################# FORM ########################################*/
 
 .form {
   border: 1px solid gainsboro;
