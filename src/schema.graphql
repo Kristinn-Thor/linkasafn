@@ -30,7 +30,7 @@
     id: ID!
     description: String!
     url: String!
-    postedBy: User
+    postedBy: User!
     votes: [Vote!]!
   }
 
