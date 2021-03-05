@@ -55,3 +55,10 @@
   margin-right: 0.5rem;
   padding: 0.2rem;
 }
+
+/*################################# Efni á síðu ########################################*/
+
+/* Linkar e.Links sem notendur pósta á síðuna */
+.links {
+  display: flex;
+}

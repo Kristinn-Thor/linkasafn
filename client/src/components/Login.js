@@ -1,35 +1,9 @@
 
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useAuthToken } from './AuthToken';
-
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutation(
-    $email: String!
-    $password: String!
-    $name: String!
-  ) {
-    signup(
-      email: $email
-      password: $password
-      name: $name
-    ) {
-      token
-    }
-  }
-`;
-
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation(
-    $email: String!
-    $password: String!
-  ) {
-    login(email: $email, password: $password) {
-      token
-    }
-  }
-`;
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from '../mutations';
 
 const Login = () => {
   const history = useHistory();
@@ -39,16 +13,26 @@ const Login = () => {
   const [, setAuthToken,] = useAuthToken();
 
   const [formState, setFormState] = useState({
+    loading: false,
     login: true,
     email: '',
     password: '',
     name: ''
   });
 
-  const [login] = useMutation(LOGIN_MUTATION, {
+  const [errorState, setError] = useState({
+    error: false,
+    message: ''
+  })
+
+  const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION, {
     variables: {
       email: formState.email,
       password: formState.password
+    },
+    onError: (error) => {
+      setError({ ...error, error: true, message: "Villa við innskráningu. Notandanafn eða lykilorð vitlaust" });
+      console.info(errorState.message);
     },
     onCompleted: ({ login }) => {
       setAuthToken(login.token);
@@ -56,17 +40,24 @@ const Login = () => {
     }
   });
 
-  const [signup] = useMutation(SIGNUP_MUTATION, {
+  const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION, {
     variables: {
       name: formState.name,
       email: formState.email,
       password: formState.password
+    },
+    onError: (error) => {
+      setError({ ...error, error: true, message: "Villa við innskráningu." });
+      console.info(errorState.message);
     },
     onCompleted: ({ signup }) => {
       setAuthToken(signup.token);
       history.push('/');
     }
   });
+
+  if (loginLoading) return <p>Loading...</p>;
+  if (signupLoading) return <p>Loading...</p>;
 
   return (
     <>
@@ -105,6 +96,13 @@ const Login = () => {
           {formState.login ? 'skrá nýjan reikning?' : 'nú þegar með reikning?'}
         </button>
       </div>
+
+      { errorState.error && (
+        <>
+          <h3>Villa</h3>
+          <p>{errorState.message}</p>
+        </>
+      )}
     </>
   );
 };
