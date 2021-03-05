@@ -1,7 +1,8 @@
-import { useMutation, gql } from "@apollo/client";
+
 import React, { useState } from "react";
 import { useHistory } from "react-router";
-import { AUTH_TOKEN } from "./constants";
+import { useMutation, gql } from "@apollo/client";
+import { useAuthToken } from './AuthToken';
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation(
@@ -32,6 +33,10 @@ const LOGIN_MUTATION = gql`
 
 const Login = () => {
   const history = useHistory();
+  // Notum useAuthToken react-krókinn sem við útfærðum til þess að vista lykilinn
+  // sem við fáum sem svar frá serverinum ef innskráning eða nýskráning heppnast.
+  // Lykillin (token) er vistað sem 'vafrakaka'
+  const [, setAuthToken,] = useAuthToken();
 
   const [formState, setFormState] = useState({
     login: true,
@@ -46,7 +51,7 @@ const Login = () => {
       password: formState.password
     },
     onCompleted: ({ login }) => {
-      localStorage.setItem(AUTH_TOKEN, login.token);
+      setAuthToken(login.token);
       history.push('/');
     }
   });
@@ -58,7 +63,7 @@ const Login = () => {
       password: formState.password
     },
     onCompleted: ({ signup }) => {
-      localStorage.setItem(AUTH_TOKEN, signup.token);
+      setAuthToken(signup.token);
       history.push('/');
     }
   });

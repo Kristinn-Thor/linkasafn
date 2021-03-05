@@ -1,48 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './styles/index.css';
-import { } from "./styles/App.css";
-import App from './components/App';
-import { BrowserRouter } from "react-router-dom";
-import { AUTH_TOKEN } from './components/constants';
+const { ApolloServer, PubSub } = require('apollo-server');
+const { PrismaClient } = require('@prisma/client');
+require('dotenv').config();
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const Subscription = require('./resolvers/Subscription');
+const Vote = require('./resolvers/Vote');
+const Link = require('./resolvers/Link');
+const User = require('./resolvers/User');
+const { getUserId } = require('./utils');
+const fs = require('fs');
+const path = require('path');
 
-import {
-  ApolloProvider,
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache
-} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+const resolvers = {
+  Query,
+  Mutation,
+  Subscription, // Þurfum að útfæra "fields" milli hluta sérstaklega
+  Vote,
+  Link,
+  User
+}
 
+const prisma = new PrismaClient();
+const pubsub = new PubSub();
 
-const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
-});
-
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = localStorage.getItem(AUTH_TOKEN);
-  // return the headers to the context so httpLink can read them
-  console.info("client made a request");
-
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : "",
-    }
+const server = new ApolloServer({
+  typeDefs: fs.readFileSync(
+    path.join(__dirname, 'schema.graphql'),
+    'utf8'
+  ),
+  resolvers,
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      pubsub,
+      userId: (req && req.headers.authorization ? getUserId(req) : null)
+    };
   }
 });
 
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
-});
 
-ReactDOM.render(
-  <BrowserRouter>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </BrowserRouter>,
-  document.getElementById('root')
-);
+server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => console.info(`Server is runnning in ${url}`));

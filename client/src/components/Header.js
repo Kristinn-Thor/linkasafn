@@ -1,11 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
-import { AUTH_TOKEN } from "./constants";
+import { useAuthToken, useLogout } from './AuthToken';
 
 const Header = () => {
   const history = useHistory();
-  const authToken = localStorage.getItem(AUTH_TOKEN);
+  const [authToken, ,] = useAuthToken();
+  const logout = useLogout();
 
   return (
     <>
@@ -19,12 +20,12 @@ const Header = () => {
           <Link className="link" to="/search">search</Link>
           {authToken && (<><span>|</span> <Link className="link" to="/create">submit</Link></>)}
         </div>
-        <div className="login" >
+        <div className="logInOut" >
           {authToken ? (
             <div
               className="link"
               onClick={() => {
-                localStorage.removeItem(AUTH_TOKEN);
+                logout();
                 history.push('/');
               }}
             >
