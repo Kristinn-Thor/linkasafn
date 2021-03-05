@@ -16,7 +16,7 @@ const Link = (props) => {
       <div className="links-index">
         <span> {props.index + 1}. </span>
         {authToken && (
-          <div className="vote" onClick={console.info("Link up-voted")}>
+          <div className="links-vote" onClick={() => console.info("Link up-voted")}>
             ▲
           </div>
         )}

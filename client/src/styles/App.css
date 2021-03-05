@@ -61,4 +61,23 @@
 /* Linkar e.Links sem notendur pósta á síðuna */
 .links {
   display: flex;
+  margin-bottom: 0.2rem;
+}
+
+.links-index {
+  width: 3rem;
+  display: flex;
+  justify-content: space-between;
+  color: #828282;
+}
+
+.links-vote {
+  cursor: pointer;
+  padding: 0 0.2rem 0 0.2rem;
+}
+
+.links-info {
+  font-size: 0.8rem;
+  padding: 0.2rem;
+  color: #828282;
 }

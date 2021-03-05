@@ -31,6 +31,7 @@
     description: String!
     url: String!
     postedBy: User!
+    createdAt: String!
     votes: [Vote!]!
   }
 

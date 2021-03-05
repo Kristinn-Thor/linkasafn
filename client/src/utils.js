@@ -39,7 +39,8 @@ function timeDifference(current, previous) {
 }
 
 export function timeDifferenceForDate(date) {
+  const dateAsInt = parseInt(date, 10);
   const now = new Date().getTime();
-  const updated = new Date(date).getTime();
+  const updated = new Date(dateAsInt).getTime();
   return timeDifference(now, updated);
 }
