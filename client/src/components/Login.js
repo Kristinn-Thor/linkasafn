@@ -23,7 +23,7 @@ const Login = () => {
   const [errorState, setError] = useState({
     error: false,
     message: ''
-  })
+  });
 
   const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION, {
     variables: {
@@ -31,8 +31,7 @@ const Login = () => {
       password: formState.password
     },
     onError: (error) => {
-      setError({ ...error, error: true, message: "Villa við innskráningu. Notandanafn eða lykilorð vitlaust" });
-      console.info(errorState.message);
+      setError({ ...errorState, error: true, message: "Villa við innskráningu. Notandanafn eða lykilorð vitlaust" });
     },
     onCompleted: ({ login }) => {
       setAuthToken(login.token);
@@ -47,8 +46,7 @@ const Login = () => {
       password: formState.password
     },
     onError: (error) => {
-      setError({ ...error, error: true, message: "Villa við innskráningu." });
-      console.info(errorState.message);
+      setError({ ...errorState, error: true, message: "Villa við innskráningu." });
     },
     onCompleted: ({ signup }) => {
       setAuthToken(signup.token);

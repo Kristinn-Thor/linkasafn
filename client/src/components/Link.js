@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAuthToken } from './AuthToken';
-import { LINKS_PER_PAGE } from "../constants";
 import { timeDifferenceForDate } from "../utils";
 import { useMutation } from '@apollo/client';
 import { VOTE_MUTATION } from '../mutations';
@@ -12,12 +11,11 @@ const Link = (props) => {
   const [vote] = useMutation(VOTE_MUTATION, {
     variables: {
       linkId: link.id
+    },
+    onError: (error) => {
+      console.info("Aðeins hægt að veita link eitt atkvæði");
     }
-  })
-
-  const take = LINKS_PER_PAGE;
-  const skip = 0;
-  const orderBy = { createdAt: 'desc' };
+  });
 
   return (
     <div className="links">

@@ -7,6 +7,7 @@ import Login from './Login';
 import { ApolloProvider } from '@apollo/client';
 import { useApolloClient } from '../apolloClient';
 import '../styles/App.css';
+import Search from './Search';
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Switch>
               <Route exact path="/" component={LinkList} />
               <Route exact path="/create" component={CreateLink} />
+              <Route exact path="/search" component={Search} />
               <Route exact path="/login" component={Login} />
             </Switch>
           </div>
