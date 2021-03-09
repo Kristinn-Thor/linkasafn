@@ -40,13 +40,9 @@ const LinkList = () => {
   });
 
   const isNewPage = history.location.pathname.includes('new');
-  console.info("isNewPage:", isNewPage);
   const pageIndexParams = history.location.pathname.split('/');
-  console.info("pageIndexParams:", pageIndexParams);
   const page = parseInt(pageIndexParams[pageIndexParams.length - 1]);
-  console.info("page:", page);
   const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
-  console.info("pageIndex:", pageIndex);
 
   // Náum í linkana með því að senda gql fyrirspurn á serverinn
   const { data, loading, subscribeToMore } = useQuery(FEED_QUERY, {
