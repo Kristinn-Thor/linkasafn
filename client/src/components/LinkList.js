@@ -79,7 +79,7 @@ const LinkList = () => {
   return (
     <>
       {loading && <p>Sæki gögn...</p>}
-      {errorState.error && <p>errorState.message</p>}
+      {errorState.error && <p>{errorState.message}</p>}
       { data && (
         <>
           {getLinksToRender(isNewPage, data).map(
