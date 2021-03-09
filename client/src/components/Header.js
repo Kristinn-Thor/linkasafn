@@ -32,10 +32,10 @@ const Header = () => {
               logout
             </div>
           ) : (
-              <Link to="/login" className="link">
-                login
-              </Link>
-            )}
+            <Link to="/login" className="link">
+              login
+            </Link>
+          )}
         </div>
       </div>
     </>

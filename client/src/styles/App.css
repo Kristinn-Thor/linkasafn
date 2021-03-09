@@ -2,6 +2,10 @@
   max-width: 1000px;
   margin: auto;
 }
+
+.hidden {
+  display: none;
+}
 /*################################# HEADER ########################################*/
 .nav {
   display: flex;
@@ -56,7 +60,7 @@
   padding: 0.2rem;
 }
 
-/*################################# Efni á síðu ########################################*/
+/*################################# Efni á síðu /new:page ########################################*/
 
 /* Linkar e.Links sem notendur pósta á síðuna */
 .links {
@@ -80,4 +84,20 @@
   font-size: 0.8rem;
   padding: 0.2rem;
   color: #828282;
+}
+
+.pageNav {
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+  width: 10rem;
+  margin: auto;
+}
+
+.pageScroll {
+  cursor: pointer;
+}
+
+.pageScroll:hover {
+  color: rgb(250, 162, 31);
 }

@@ -23,7 +23,7 @@ const CreateLink = () => {
     update: (cache, { data: { post } }) => {
       const take = LINKS_PER_PAGE;
       const skip = 0;
-      const orderBy = { createdAt: 'desc' };
+      const orderBy = { createdAt: 'asc' };
 
       // Náum í alla linka sem Apollo var búið að cache-a
       const data = cache.readQuery({

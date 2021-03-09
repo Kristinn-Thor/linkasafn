@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter } from "react-router-dom";
+import { Switch, Route, BrowserRouter, Redirect } from "react-router-dom";
 import CreateLink from './CreateLink';
 import LinkList from "./LinkList";
 import Header from "./Header";
@@ -20,10 +20,12 @@ function App() {
           <Header />
           <div className="background">
             <Switch>
-              <Route exact path="/" component={LinkList} />
-              <Route exact path="/create" component={CreateLink} />
+              <Route exact path="/" render={() => <Redirect to="/new/1" />} />
+              <Route exact path="/top" component={LinkList} />
+              <Route exact path="/new/:page" component={LinkList} />
               <Route exact path="/search" component={Search} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/create" component={CreateLink} />
             </Switch>
           </div>
         </div>
