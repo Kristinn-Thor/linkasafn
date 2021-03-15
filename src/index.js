@@ -1,4 +1,4 @@
-const { ApolloServer, PubSub } = require('apollo-server');
+const { ApolloServer } = require('apollo-server');
 const { PrismaClient } = require('@prisma/client');
 require('dotenv').config();
 const Query = require('./resolvers/Query');
@@ -21,9 +21,11 @@ const resolvers = {
 }
 
 const prisma = new PrismaClient();
-const pubsub = new PubSub();
 
 const server = new ApolloServer({
+  subscriptions: {
+    path: '/subscriptions'
+  },
   typeDefs: fs.readFileSync(
     path.join(__dirname, 'schema.graphql'),
     'utf8'
@@ -33,7 +35,6 @@ const server = new ApolloServer({
     return {
       ...req,
       prisma,
-      pubsub,
       userId: (req && req.headers.authorization ? getUserId(req) : null)
     };
   }

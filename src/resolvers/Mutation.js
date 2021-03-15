@@ -42,7 +42,7 @@ const Mutation = {
           postedBy: { connect: { id: userId } }
         }
       });
-      context.pubsub.publish("NEW_LINK", newLink);
+      // ATH erum að nota polling í stað subscrptions context.pubsub.publish("NEW_LINK", newLink);
       return newLink;
     },
   // ####################### TODO -> Uppfæra mutation resolverana fyrir SQlite gagnagrunninn ################
@@ -86,7 +86,7 @@ const Mutation = {
         }
       });
       // Látum "áskrifendur" vita að linkurinn fékk nýtt atkvæði
-      context.pubsub.publish("NEW_VOTE", newVote);
+      // ATH erum að nota polling í stað subscrptions context.pubsub.publish("NEW_VOTE", newVote);
 
       return newVote;
     }

@@ -4,32 +4,7 @@ import { useQuery } from '@apollo/client';
 import { FEED_QUERY } from '../queries';
 import { LINKS_PER_PAGE } from "../constants";
 import { useHistory } from 'react-router';
-import { NEW_LINKS_SUBSCRIPTION, NEW_VOTES_SUBSCRIPTION } from "../subscriptions";
-
-
-/*############################ Hjálparföll #############################*/
-// Fall sem sér um að réttar breytur fylgi sql fyrirspurninni út frá því
-// hvort við erum á síðunnni sem sýnir okkur nýjustu linka (/new/:page)
-// eða top 10 vinsælustu linkana (/top)
-const getQueryVariables = (isNewPage, page) => {
-  const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
-  const take = isNewPage ? LINKS_PER_PAGE : 10;
-  const orderBy = { createdAt: 'desc' };
-  return { take, skip, orderBy };
-};
-
-// Fall sem skilar okkur linkum sem eru raðaðir eftir vinsældum
-// ef við erum ekki á /new vefslóð. Ef ekki fáum við gögnin í 
-// þeirri röð sem fyrirspurnin í gagnagrunnin skilaði okkur.
-const getLinksToRender = (isNewPage, data) => {
-  if (isNewPage) {
-    return data.feed.links;
-  }
-  const rankedLinks = data.feed.links.slice(); // Afrit af linkunum
-  rankedLinks.sort((l1, l2) => l2.votes.length - l1.votes.length);
-  return rankedLinks;
-};
-/*######################################################################*/
+import { getQueryVariables } from "../helperFunctions";
 
 const LinkList = () => {
   const history = useHistory();
@@ -40,9 +15,10 @@ const LinkList = () => {
   const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
 
   // Náum í linkana með því að senda gql fyrirspurn á serverinn
-  const { client, data, loading, error, fetchMore, subscribeToMore } = useQuery(FEED_QUERY, {
+  const { client, data, loading, error, fetchMore } = useQuery(FEED_QUERY, {
     variables: getQueryVariables(isNewPage, page),
-    onCompleted: () => { console.info(client.cache.data.data); }
+    pollInterval: 2000,
+    onCompleted: () => { console.info(client.cache.data); }
   });
 
   // Ef við skilgreinum ekki fetchMore fallið þá veit Apollo Clientinn ekki hvaða
@@ -51,30 +27,6 @@ const LinkList = () => {
   fetchMore({
     variables: getQueryVariables(isNewPage, page)
   })
-
-  // Gerumst "áskrifendur" á því þegar nýir linkar verða til
-  subscribeToMore({
-    document: NEW_LINKS_SUBSCRIPTION,
-    updateQuery: (prev, { subscriptionData }) => {
-      if (!subscriptionData.data) return prev;
-      const newLink = subscriptionData.data.newLink;
-      const exists = prev.feed.links.find(({ id }) => id === newLink.id);
-      if (exists) return prev;
-
-      return Object.assign({}, prev, {
-        feed: {
-          links: [newLink, ...prev.feed.links],
-          count: prev.feed.links.length + 1,
-          __typename: prev.feed.__typename
-        }
-      });
-    }
-  });
-
-  // Fylgjumst með fjölda atkvæða á rauntíma
-  subscribeToMore({
-    document: NEW_VOTES_SUBSCRIPTION
-  });
 
   return (
     <>
@@ -85,7 +37,7 @@ const LinkList = () => {
           {console.info(data)}
           {data.feed.links.map(
             (link, index) => (
-              <Link key={link.id} link={link} index={index + pageIndex} />
+              <Link key={link.id} link={link} index={index + pageIndex} isNewPage={isNewPage} page={page} />
             )
           )}
           {isNewPage && (
