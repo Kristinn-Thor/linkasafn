@@ -4,6 +4,11 @@ function getTokenPayload(token) {
   return jwt.verify(token, process.env.APP_SECRET);
 }
 
+/**
+ * 
+ * @param {object} req request frá client
+ * @returns {string} JasonWebToken sem tilgreinir notanda
+ */
 function getUserId(req, authToken) {
   if (req) {
     const authHeader = req.headers.authorization;
@@ -15,9 +20,6 @@ function getUserId(req, authToken) {
       const { userId } = getTokenPayload(token);
       return userId;
     }
-  } else if (authToken) {
-    const { userId } = getTokenPayload(authToken);
-    return userId;
   }
   throw new Error('Not authenticated');
 }

@@ -32,7 +32,9 @@ const Mutation = {
   post:
     async function post(parent, args, context, info) {
       const { userId } = context;
-
+      if (!userId) {
+        throw new Error('You have to log in first');
+      };
       const newLink = await context.prisma.link.create({
         data: {
           url: args.url,

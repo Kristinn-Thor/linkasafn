@@ -19,6 +19,7 @@ const Query = {
       const count = await context.prisma.link.count({ where });
 
       const feed = {
+        id: 'main-feed',
         links,
         count
       }

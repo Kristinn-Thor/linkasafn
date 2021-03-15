@@ -11,6 +11,11 @@ const CreateLink = () => {
     url: ''
   });
 
+  const [errorState, setError] = useState({
+    error: false,
+    message: 'Obbosí villa við að skrá link'
+  });
+
   const history = useHistory();
 
   const [createLink] = useMutation(CREATE_LINK_MUTATION, {
@@ -18,13 +23,17 @@ const CreateLink = () => {
       description: formState.description,
       url: formState.url
     },
+    onError: (error) => {
+      setError({ ...errorState, error: true });
+      console.info(error);
+    },
     // Þurfum að uppfæra Apollo Store þegar við eyðum, búum til nýja eind (e.entity) 
     // eða uppfærum  margar eindir í einu.
     update: (cache, { data: { post } }) => {
       const take = LINKS_PER_PAGE;
       const skip = 0;
-      const orderBy = { createdAt: 'asc' };
-
+      const orderBy = { createdAt: 'desc' };
+      console.info("Halló frá useMutation update. post: ", post);
       // Náum í alla linka sem Apollo var búið að cache-a
       const data = cache.readQuery({
         query: FEED_QUERY,
@@ -34,7 +43,7 @@ const CreateLink = () => {
           orderBy
         }
       });
-
+      console.info("Data: ", data)
       // Uppfærum cache-ið með því að bæta nýja linknum í linka fylkið
       cache.writeQuery({
         query: FEED_QUERY,

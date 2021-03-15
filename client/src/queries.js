@@ -4,6 +4,7 @@ export const FEED_QUERY = gql`
  query FeedQuery($orderBy: LinkOrderByInput, $skip: Int, $take: Int){
     feed(orderBy: $orderBy, skip: $skip, take:$take) {
       count
+      id
       links {
         id
         createdAt
@@ -27,6 +28,7 @@ export const FEED_QUERY = gql`
 export const FEED_SEARCH_QUERY = gql`
   query FeedSearchQuery($filter: String!) {
     feed(filter: $filter) {
+      id
       links {
         id
         url

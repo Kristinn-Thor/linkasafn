@@ -29,7 +29,7 @@ export const useLogout = () => {
   const apolloClient = useApolloClient(); // apolloClient vísar nú í 'client-inn' sem við bjuggum til í upphafi í App.js
 
   const logout = async () => {
-    await apolloClient.clearStore();
+    await apolloClient.resetStore();
     removeAuthToken();
   };
 
