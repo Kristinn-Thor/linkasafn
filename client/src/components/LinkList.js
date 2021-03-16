@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from './Link';
 import { useQuery } from '@apollo/client';
 import { FEED_QUERY } from '../queries';
@@ -8,20 +8,21 @@ import { getQueryVariables } from "../helperFunctions";
 
 const LinkList = () => {
   const history = useHistory();
+  const [found, setFound] = useState(false)
 
   const pageIndexParams = history.location.pathname.split('/');
   let page = parseInt(pageIndexParams[pageIndexParams.length - 1]);
   if (page < 1) page = 1;
   const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
 
-  if (page > 3) throw new Error('Villa!');
   // Náum í linkana með því að senda gql fyrirspurn á serverinn
   const { data, loading, error, fetchMore } = useQuery(FEED_QUERY, {
     variables: getQueryVariables(page),
-    pollInterval: 2000,
+    pollInterval: 30000,
     onCompleted: () => {
-      console.info("Feed Query lokið");
-      if (data.feed.links.length < 1) console.info("Ekkert fannst :/");
+      if (data.feed.links.length < 1) {
+        setFound(false);
+      } else setFound(true);
     }
   });
 
@@ -64,6 +65,7 @@ const LinkList = () => {
               Next
             </div>
           </div>
+          {!found && <h2>Ekkert fannst :/</h2>}
         </>
       )}
     </>

@@ -42,7 +42,6 @@ export const useApolloClient = () => {
       typePolicies: {
         Query: {
           fields: {
-            keyArgs: false,
             Feed: offsetLimitPagination()
           }
         }

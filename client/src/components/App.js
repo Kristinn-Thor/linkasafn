@@ -9,6 +9,7 @@ import { useApolloClient } from '../apolloClient';
 import '../styles/App.css';
 import Search from './Search';
 import ErrorBoundary from './ErrorBoundary';
+import Page404 from './Page404';
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/create" component={CreateLink} />
+                <Route component={Page404} />
               </Switch>
             </div>
           </ErrorBoundary>
