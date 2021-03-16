@@ -7,7 +7,8 @@ export const getQueryVariables = (page) => {
   const skip = (page - 1) * LINKS_PER_PAGE;
   const take = LINKS_PER_PAGE;
   const orderBy = { createdAt: 'desc' };
-  return { take, skip, orderBy };
+  if (page) return { take, skip, orderBy };
+  return {}
 };
 
 // Fall sem skilar okkur linkum sem eru raðaðir eftir vinsældum

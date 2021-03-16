@@ -1,3 +1,5 @@
+const _ = require('lodash/core');
+
 const Query = {
   info: () => 'This is the API of Hackernews Clone',
   feed:
@@ -18,8 +20,9 @@ const Query = {
 
       const count = await context.prisma.link.count({ where });
 
+      const id = (_.isEmpty(args)) ? 'all-feed' : 'main-feed';
       const feed = {
-        id: 'main-feed',
+        id: id,
         links,
         count
       }

@@ -10,6 +10,7 @@ import '../styles/App.css';
 import Search from './Search';
 import ErrorBoundary from './ErrorBoundary';
 import Page404 from './Page404';
+import TopLinks from './TopLinks';
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
             <div className="background">
               <Switch>
                 <Route exact path="/" render={() => <Redirect to="/new/1" />} />
-                <Route exact path="/top" component={LinkList} />
+                <Route exact path="/top" component={TopLinks} />
                 <Route exact path="/new/:page" component={LinkList} />
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/login" component={Login} />

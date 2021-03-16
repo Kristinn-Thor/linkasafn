@@ -25,6 +25,31 @@ export const FEED_QUERY = gql`
   }
 `;
 
+export const FEED_QUERY_ALL = gql`
+ query FeedQueryAll{
+    feed {
+      count
+      id
+      links {
+        id
+        createdAt
+        url
+        description
+        postedBy {
+          id
+          name
+        }
+        votes {
+          id
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const FEED_SEARCH_QUERY = gql`
   query FeedSearchQuery($filter: String!) {
     feed(filter: $filter) {

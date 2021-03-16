@@ -52,7 +52,7 @@ const LinkList = () => {
                 }
               }}
             >
-              Previous
+              Til baka
             </div>
             <div className={`nextPage pageScroll ${page <= data.feed.count / LINKS_PER_PAGE ? "" : "hidden"}`}
               onClick={() => {
@@ -62,7 +62,7 @@ const LinkList = () => {
                 }
               }}
             >
-              Next
+              Næsta síða
             </div>
           </div>
           {!found && <h2>Ekkert fannst :/</h2>}
