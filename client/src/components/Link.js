@@ -3,19 +3,13 @@ import { useAuthToken } from './AuthToken';
 import { timeDifferenceForDate } from "../utils";
 import { useMutation } from '@apollo/client';
 import { VOTE_MUTATION } from '../mutations';
-import { LINKS_PER_PAGE } from "../constants";
 import { FEED_QUERY } from "../queries";
 import { getQueryVariables } from "../helperFunctions";
 
 const Link = (props) => {
   const [authToken, ,] = useAuthToken();
   const { link } = props;
-  const { isNewPage } = props;
   const { page } = props;
-
-  const take = LINKS_PER_PAGE;
-  const skip = 0;
-  const orderBy = { createdAt: 'desc' };
 
   const [vote] = useMutation(VOTE_MUTATION, {
     variables: {
@@ -25,7 +19,7 @@ const Link = (props) => {
     update(cache, { data: { vote } }) {
       const { feed } = cache.readQuery({
         query: FEED_QUERY,
-        variables: getQueryVariables(isNewPage, page)
+        variables: getQueryVariables(page)
       });
 
       const updatedLinks = feed.links.map((feedLink) => {
@@ -45,11 +39,7 @@ const Link = (props) => {
             links: updatedLinks
           }
         },
-        variables: {
-          take,
-          skip,
-          orderBy
-        }
+        variables: getQueryVariables(page)
       });
     }
   });

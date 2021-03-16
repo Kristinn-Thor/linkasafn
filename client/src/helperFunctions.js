@@ -3,9 +3,9 @@ import { LINKS_PER_PAGE } from "./constants";
 // Fall sem sér um að réttar breytur fylgi sql fyrirspurninni út frá því
 // hvort við erum á síðunnni sem sýnir okkur nýjustu linka (/new/:page)
 // eða top 10 vinsælustu linkana (/top)
-export const getQueryVariables = (isNewPage, page) => {
-  const skip = isNewPage ? (page - 1) * LINKS_PER_PAGE : 0;
-  const take = isNewPage ? LINKS_PER_PAGE : 10;
+export const getQueryVariables = (page) => {
+  const skip = (page - 1) * LINKS_PER_PAGE;
+  const take = LINKS_PER_PAGE;
   const orderBy = { createdAt: 'desc' };
   return { take, skip, orderBy };
 };

@@ -8,6 +8,7 @@ import { ApolloProvider } from '@apollo/client';
 import { useApolloClient } from '../apolloClient';
 import '../styles/App.css';
 import Search from './Search';
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
 
@@ -18,16 +19,18 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Header />
-          <div className="background">
-            <Switch>
-              <Route exact path="/" render={() => <Redirect to="/new/1" />} />
-              <Route exact path="/top" component={LinkList} />
-              <Route exact path="/new/:page" component={LinkList} />
-              <Route exact path="/search" component={Search} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/create" component={CreateLink} />
-            </Switch>
-          </div>
+          <ErrorBoundary>
+            <div className="background">
+              <Switch>
+                <Route exact path="/" render={() => <Redirect to="/new/1" />} />
+                <Route exact path="/top" component={LinkList} />
+                <Route exact path="/new/:page" component={LinkList} />
+                <Route exact path="/search" component={Search} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/create" component={CreateLink} />
+              </Switch>
+            </div>
+          </ErrorBoundary>
         </div>
       </BrowserRouter>
     </ApolloProvider>

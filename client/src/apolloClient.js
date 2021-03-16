@@ -28,30 +28,6 @@ export const useApolloClient = () => {
     uri: 'http://localhost:4000'
   });
 
-  /* ### Kóði sem þurfum ef ætlum að nota subscriptions ### 
-     ### í stað polling til þess að sýna breytingar á síðunni  ###
-  const wsLink = new WebSocketLink({
-    uri: `ws://localhost:4000/subscriptions`,
-    options: {
-      reconnect: true,
-      connectionParams: {
-        authToken: token
-      }
-    }
-  });
-
-  const link = split(
-    ({ query }) => {
-      const { kind, operation } = getMainDefinition(query);
-      return (
-        kind === 'OperationDefinition' &&
-        operation === 'subscription'
-      );
-    },
-    wsLink,
-    authMiddleware(token).concat(httpLink)
-  );
-  */
   const link = authMiddleware(token).concat(httpLink)
 
   return new ApolloClient({
@@ -64,9 +40,10 @@ export const useApolloClient = () => {
         sjá docs: https://www.apollographql.com/docs/react/pagination/core-api/
       */
       typePolicies: {
-        query: {
+        Query: {
           fields: {
-            feed: offsetLimitPagination()
+            keyArgs: false,
+            Feed: offsetLimitPagination()
           }
         }
       }
