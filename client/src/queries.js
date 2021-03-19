@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const FEED_QUERY = gql`
- query FeedQuery($orderBy: LinkOrderByInput, $skip: Int, $take: Int){
-    feed(orderBy: $orderBy, skip: $skip, take:$take) {
+ query FeedQuery($type: ID, $orderBy: LinkOrderByInput, $skip: Int, $take: Int){
+    feed(type: $type, orderBy: $orderBy, skip: $skip, take:$take) {
       count
       id
       links {
@@ -25,9 +25,9 @@ export const FEED_QUERY = gql`
   }
 `;
 
-export const FEED_QUERY_ALL = gql`
- query FeedQueryAll{
-    feed {
+export const FEED_QUERY_TOP = gql`
+ query FeedQueryTop($type: ID, $orderBy: LinkOrderByInput, $skip: Int, $take: Int){
+    feed(type: $type, orderBy: $orderBy, skip: $skip, take:$take) {
       count
       id
       links {
@@ -39,6 +39,7 @@ export const FEED_QUERY_ALL = gql`
           id
           name
         }
+        votesCount
         votes {
           id
           user {
@@ -51,8 +52,8 @@ export const FEED_QUERY_ALL = gql`
 `;
 
 export const FEED_SEARCH_QUERY = gql`
-  query FeedSearchQuery($filter: String!) {
-    feed(filter: $filter) {
+  query FeedSearchQuery($type: ID, $filter: String!) {
+    feed(type: $type, filter: $filter) {
       id
       links {
         id

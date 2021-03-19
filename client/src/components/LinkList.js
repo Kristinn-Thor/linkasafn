@@ -8,7 +8,7 @@ import { getQueryVariables } from "../helperFunctions";
 
 const LinkList = () => {
   const history = useHistory();
-  const [found, setFound] = useState(false)
+  const [found, setFound] = useState(false);
 
   const pageIndexParams = history.location.pathname.split('/');
   let page = parseInt(pageIndexParams[pageIndexParams.length - 1]);
@@ -16,8 +16,9 @@ const LinkList = () => {
   const pageIndex = page ? (page - 1) * LINKS_PER_PAGE : 0;
 
   // Náum í linkana með því að senda gql fyrirspurn á serverinn
-  const { data, loading, error, fetchMore } = useQuery(FEED_QUERY, {
-    variables: getQueryVariables(page),
+  const { data, loading, error } = useQuery(FEED_QUERY, {
+    fetchPolicy: 'network-only', // Ath. notum ekki cache fyrir main-feed, á eftir að finna lausn á TypePolicies villu
+    variables: getQueryVariables(page, 'main-feed'),
     pollInterval: 30000,
     onCompleted: () => {
       if (data.feed.links.length < 1) {
@@ -25,17 +26,15 @@ const LinkList = () => {
       } else setFound(true);
     }
   });
-
-  // Ef við skilgreinum ekki fetchMore fallið þá veit Apollo Clientinn ekki hvaða
-  // niðurstöðu á að birta úr cache-inu þegar búið er að ná í alla linkana,
-  // heldur birtir okkur niðurstöðuna úr síðustu fyrirspurn.
+  /* Ath. notum ekki cache fyrir main-feed, á eftir að finna lausn á TypePolicies villu
   fetchMore({
-    variables: getQueryVariables(page)
-  })
+    variables: getQueryVariables(page, 'main-feed')
+  });
+  */
+  if (loading) return <p>Sæki gögn...</p>
 
   return (
     <>
-      {loading && <p>Sæki gögn...</p>}
       {error && <h2>Villa við að sækja gögn :(</h2>}
       { data && (
         <>
@@ -54,19 +53,20 @@ const LinkList = () => {
             >
               Til baka
             </div>
-            <div className={`nextPage pageScroll ${page <= data.feed.count / LINKS_PER_PAGE ? "" : "hidden"}`}
+            <div className={`nextPage pageScroll ${page < data.feed.count / LINKS_PER_PAGE ? "" : "hidden"}`}
               onClick={() => {
-                if (page <= data.feed.count / LINKS_PER_PAGE) {
-                  const nextPage = page + 1;
-                  history.push(`/new/${nextPage}`);
+                if (page < data.feed.count / LINKS_PER_PAGE) {
+                  history.push(`/new/${page + 1}`);
                 }
               }}
             >
               Næsta síða
-            </div>
           </div>
-          {!found && <h2>Ekkert fannst :/</h2>}
+          </div>
+
+          {!found && <h2>Engir linkar fundust</h2>}
         </>
+
       )}
     </>
   );

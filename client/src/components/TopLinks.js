@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import Link from './Link';
 import { useQuery } from '@apollo/client';
-import { FEED_QUERY_ALL } from '../queries';
+import { FEED_QUERY_TOP } from '../queries';
 import { useHistory } from 'react-router';
 
 const TopLinks = () => {
-  const [found, setFound] = useState(false)
+  const [found, setFound] = useState(false);
   const history = useHistory();
-
   const isTop = history.location.pathname.includes('top');
 
-  // TODO raða linkum eftir lækum og birta aðeins þá
-  const { data, loading, error } = useQuery(FEED_QUERY_ALL, {
+  const { data, loading, error } = useQuery(FEED_QUERY_TOP, {
+    variables: {
+      type: 'top-feed',
+      skip: 0,
+      take: 20,
+      orderBy: { votesCount: 'desc' }
+    },
     pollInterval: 30000, // Uppfærum síðuna á 30sek fresti til að fylgjast með breytingum
     onCompleted: () => {
       if (data.feed.links.length < 1) {

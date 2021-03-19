@@ -3,51 +3,29 @@ import { useAuthToken } from './AuthToken';
 import { timeDifferenceForDate } from "../utils";
 import { useMutation } from '@apollo/client';
 import { VOTE_MUTATION } from '../mutations';
-import { FEED_QUERY, FEED_QUERY_ALL } from "../queries";
-import { getQueryVariables } from "../helperFunctions";
+import { FEED_QUERY, FEED_QUERY_TOP } from "../queries";
+import { getQueryVariables, readLinksAndUpdateQuery } from "../helperFunctions";
 
-const Link = ({ link, page, index, isTop }) => {
+const Link = ({ link, page, index }) => {
   const [authToken, ,] = useAuthToken();
 
   const [vote] = useMutation(VOTE_MUTATION, {
     variables: {
       linkId: link.id
     },
-    onError: (error) => console.info(error),
-    // TODO uppfæra viðeigandi linka út frá vefslóð
+    onError: (error) => console.info(error.message),
     update(cache, { data: { vote } }) {
-      // Þurfum að uppfæra cache-ið út frá hvaða "query" við kölluðum á
-      const whatToRead = (isTop) ? { query: FEED_QUERY_ALL } : { query: FEED_QUERY, variables: getQueryVariables(page) };
-
-      const { feed } = cache.readQuery(whatToRead);
-      const updatedLinks = feed.links.map((feedLink) => {
-        if (feedLink.id === link.id) {
-          return {
-            ...feedLink,
-            votes: [...feedLink.votes, vote]
-          };
-        }
-        return feedLink;
-      });
-
-      const whatToWrite = (isTop) ? {
-        query: FEED_QUERY_ALL,
-        data: {
-          feed: {
-            links: updatedLinks
-          }
-        }
-      } : {
-        query: FEED_QUERY,
-        data: {
-          feed: {
-            links: updatedLinks
-          }
-        },
-        variables: getQueryVariables(page)
+      // Uppfærum cache-ið fyrir báðar fyrirspurnir 
+      const feedQueryAll = {
+        query: FEED_QUERY_TOP,
+        variables: { type: 'top-feed', skip: 0, take: 20, orderBy: { votesCount: 'desc' } }
       };
-
-      cache.writeQuery(whatToWrite);
+      const feedQuery = {
+        query: FEED_QUERY,
+        variables: getQueryVariables(page, 'main-feed')
+      };
+      readLinksAndUpdateQuery(feedQueryAll, cache, link, vote);
+      readLinksAndUpdateQuery(feedQuery, cache, link, vote);
     }
   });
 

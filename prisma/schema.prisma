@@ -18,6 +18,7 @@ model Link {
   postedBy    User     @relation(fields: [postedById], references: [id])
   postedById  Int
   votes       Vote[]
+  votesCount  Int
 }
 
 model User {

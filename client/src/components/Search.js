@@ -4,8 +4,15 @@ import Link from './Link';
 import { FEED_SEARCH_QUERY } from '../queries';
 
 const Search = () => {
+  const [results, setResults] = useState({ queryDone: false, found: false });
   const [searchFilter, setSearchFilter] = useState('');
-  const [executeSearch, { data }] = useLazyQuery(FEED_SEARCH_QUERY);
+  const [executeSearch, { data }] = useLazyQuery(FEED_SEARCH_QUERY, {
+    onCompleted: () => {
+      if (data.feed.links.length < 1) {
+        setResults({ queryDone: true, found: false });
+      } else setResults({ queryDone: true, found: true });
+    }
+  });
 
   return (
     <>
@@ -17,7 +24,7 @@ const Search = () => {
         />
         <button
           onClick={() => executeSearch({
-            variables: { filter: searchFilter }
+            variables: { type: 'search-feed', filter: searchFilter }
           })
           }
         >
@@ -28,6 +35,7 @@ const Search = () => {
         data.feed.links.map((link, index) => (
           <Link key={link.id} link={link} index={index} />
         ))}
+      {results.queryDone && !results.found && <h2>Ekkert fannst :/</h2>}
     </>
   );
 };

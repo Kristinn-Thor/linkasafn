@@ -1,7 +1,7 @@
 
   type Query {
     info: String!
-    feed(filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
+    feed(type: ID, filter: String, skip: Int, take: Int, orderBy: LinkOrderByInput): Feed!
     link(id: ID!): Link
     users: [User!]!
   }
@@ -34,6 +34,7 @@
     postedBy: User!
     createdAt: String!
     votes: [Vote!]!
+    votesCount: Int!
   }
 
   type Subscription {
@@ -57,6 +58,7 @@
     description: Sort
     url: Sort
     createdAt: Sort
+    votesCount: Sort
   }
 
   enum Sort {

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { useHistory } from "react-router";
 import { CREATE_LINK_MUTATION } from '../mutations';
-import { LINKS_PER_PAGE } from "../constants";
-import { FEED_QUERY } from '../queries';
 
 const CreateLink = () => {
   const [formState, setFormState] = useState({
@@ -26,38 +24,6 @@ const CreateLink = () => {
     onError: (error) => {
       setError({ ...errorState, error: true });
       console.info(error);
-    },
-    // Þurfum að uppfæra Apollo Store þegar við eyðum, búum til nýja eind (e.entity) 
-    // eða uppfærum  margar eindir í einu.
-    update: (cache, { data: { post } }) => {
-      const take = LINKS_PER_PAGE;
-      const skip = 0;
-      const orderBy = { createdAt: 'desc' };
-      console.info("Halló frá useMutation update. post: ", post);
-      // Náum í alla linka sem Apollo var búið að cache-a
-      const data = cache.readQuery({
-        query: FEED_QUERY,
-        variables: {
-          take,
-          skip,
-          orderBy
-        }
-      });
-      console.info("Data: ", data)
-      // Uppfærum cache-ið með því að bæta nýja linknum í linka fylkið
-      cache.writeQuery({
-        query: FEED_QUERY,
-        data: {
-          feed: {
-            links: [post, ...data.feed.links]
-          }
-        },
-        variables: {
-          take,
-          skip,
-          orderBy
-        }
-      });
     },
     onCompleted: () => history.push('/')
   });

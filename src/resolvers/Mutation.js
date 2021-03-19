@@ -39,13 +39,14 @@ const Mutation = {
         data: {
           url: args.url,
           description: args.description,
-          postedBy: { connect: { id: userId } }
+          postedBy: { connect: { id: userId } },
+          votesCount: 0
         }
       });
       // ATH erum að nota polling í stað subscrptions context.pubsub.publish("NEW_LINK", newLink);
       return newLink;
     },
-  // ####################### TODO -> Uppfæra mutation resolverana fyrir SQlite gagnagrunninn ################
+  // ####################### TODO -> Uppfæra mutation resolverana fyrir pg gagnagrunninn ################
   updateLink:
     async function updateLink(parent, args, context, info) {
       const index = links.findIndex(link => link.id === id);
@@ -53,7 +54,7 @@ const Mutation = {
       if (url !== undefined) links[index].url = url;
       return links[index];
     },
-  // ####################### TODO -> Uppfæra mutation resolverana fyrir SQlite gagnagrunninn ################
+  // ####################### TODO -> Uppfæra mutation resolverana fyrir pg gagnagrunninn ################
   deleteLink:
     async function deleteLink(parent, args, context, info) {
       const index = links.findIndex(link => link.id === id);
@@ -65,6 +66,9 @@ const Mutation = {
     async function vote(parent, args, context, info) {
       // Er notandi innskráður?
       const userId = getUserId(context);
+      if (!userId) {
+        throw new Error('You have to log in first');
+      };
       // Hefur notandi veitt þessum link atkvæði áður?
       const vote = await context.prisma.vote.findUnique({
         where: {
@@ -85,9 +89,15 @@ const Mutation = {
           link: { connect: { id: Number(args.linkId) } }
         }
       });
-      // Látum "áskrifendur" vita að linkurinn fékk nýtt atkvæði
-      // ATH erum að nota polling í stað subscrptions context.pubsub.publish("NEW_VOTE", newVote);
-
+      //Uppfæra votesCount fyrir viðeigandi link
+      await context.prisma.link.update({
+        where: {
+          id: Number(args.linkId)
+        },
+        data: {
+          votesCount: { increment: 1 }
+        }
+      });
       return newVote;
     }
 }
