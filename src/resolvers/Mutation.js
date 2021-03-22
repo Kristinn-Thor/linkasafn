@@ -5,6 +5,9 @@ const { getUserId } = require('../utils');
 const Mutation = {
   signup:
     async function signup(parent, args, context, info) {
+      if (args.name === '') throw new Error('invalid username');
+      if (args.email === '') throw new Error('invalid email');
+      if (args.password === '') throw new Error('invalid password');
       const password = await bcrypt.hash(args.password, 10);
       const user = await context.prisma.user.create({ data: { ...args, password } });
       const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);

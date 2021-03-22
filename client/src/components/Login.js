@@ -4,6 +4,8 @@ import { useHistory } from "react-router";
 import { useMutation } from "@apollo/client";
 import { useAuthToken } from './AuthToken';
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from '../mutations';
+import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 
 const Login = () => {
   const history = useHistory();
@@ -12,12 +14,20 @@ const Login = () => {
   // Lykillin (token) er vistað sem 'vafrakaka'
   const [, setAuthToken,] = useAuthToken();
 
+  //######################################################## STATES ########################################################
   const [formState, setFormState] = useState({
-    loading: false,
     login: true,
     email: '',
     password: '',
+    passwordConf: '',
     name: ''
+  });
+
+  const [validationState, setValidationState] = useState({
+    email: false,
+    password: false,
+    passwordConf: false,
+    name: false,
   });
 
   const [errorState, setError] = useState({
@@ -25,6 +35,7 @@ const Login = () => {
     message: ''
   });
 
+  //######################################################## LOG IN HOOK ########################################################
   const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION, {
     variables: {
       email: formState.email,
@@ -38,7 +49,8 @@ const Login = () => {
       history.push('/');
     }
   });
-
+  //##############################################################################################################################
+  //######################################################## SIGN UP HOOK ########################################################
   const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION, {
     variables: {
       name: formState.name,
@@ -53,45 +65,43 @@ const Login = () => {
       history.push('/');
     }
   });
-
+  //##############################################################################################################################
   if (loginLoading) return <p>Loading...</p>;
   if (signupLoading) return <p>Loading...</p>;
 
   return (
-    <>
+    <div>
       <h4 >{formState.login ? 'Innskráning' : 'Nýskráning'}</h4>
-      <div>
-        {!formState.login && (
-          <input
-            value={formState.name}
-            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-            type="text"
-            placeholder="Nafn"
-          />
-        )}
-        <input
-          value={formState.email}
-          onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-          type="email"
-          placeholder="Netfang"
-        />
-        <input
-          value={formState.password}
-          onChange={(e) => setFormState({ ...formState, password: e.target.value })}
-          type="password"
-          placeholder="Lykilorð"
-        />
-      </div>
+      {!formState.login && (
+        <SignUpForm
+          formState={formState}
+          setFormState={setFormState}
+          validationState={validationState}
+          setValidationState={setValidationState} />
+      )}
+      {formState.login && (
+        <LoginForm formState={formState} setFormState={setFormState} />
+      )}
       <div>
         <button
-          className="button"
-          onClick={formState.login ? login : signup} >
-          {formState.login ? 'innskráning' : 'nýskráning'}
+          className={(true) ? 'button' : 'button invalid'}
+          onClick={(e) => {
+            if (!formState.login) {
+              if (validationState.name && validationState.email && validationState.password && validationState.passwordConf) {
+                return console.info("The form is Valid : )", validationState); // login
+              } else return console.info("The form is invalid", validationState);
+            } else return console.info(`Logging in user ${formState.email}`)//login;
+          }}
+        >
+          {formState.login ? 'Innskráning' : 'Nýskráning'}
         </button>
         <button
           className="button"
-          onClick={(e) => setFormState({ ...formState, login: !formState.login })} >
-          {formState.login ? 'skrá nýjan reikning?' : 'nú þegar með reikning?'}
+          onClick={(e) => {
+            setFormState({ ...formState, login: !formState.login });
+          }}
+        >
+          {formState.login ? 'Skrá nýjan reikning?' : 'Aftur á innskráningu'}
         </button>
       </div>
 
@@ -101,7 +111,7 @@ const Login = () => {
           <p>{errorState.message}</p>
         </>
       )}
-    </>
+    </div>
   );
 };
 

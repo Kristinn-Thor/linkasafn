@@ -58,6 +58,11 @@
 .input {
   margin-right: 0.5rem;
   padding: 0.2rem;
+  background-color: springgreen;
+}
+
+.invalid {
+  background-color: salmon;
 }
 
 /*################################# Efni á síðu /new:page ########################################*/
