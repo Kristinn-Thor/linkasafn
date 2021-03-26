@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@100;400;500;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +7,13 @@
 }
 
 body {
+  color: #524169;
   font-size: 16px;
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: "Kanit", sans-serif;
+}
+
+.hidden {
+  display: none;
 }
 
 .gray {
@@ -14,20 +21,34 @@ body {
 }
 
 .background {
-  background-color: rgb(246, 246, 239);
   padding: 0.5rem;
 }
 
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
 .button {
-  font-family: monospace;
-  font-size: 10pt;
-  color: black;
-  background-color: buttonface;
+  font-size: 0.8rem;
+  font-weight: 100;
+  letter-spacing: 2px;
+  background: rgb(77, 77, 197, 0.9);
+  color: white;
   text-align: center;
-  padding: 2px 6px 3px;
-  border-width: 2px;
-  border-style: outset;
-  border-color: buttonface;
+  padding: 0.8rem;
   cursor: pointer;
-  max-width: 250px;
+  max-width: 140px;
+  transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+.button:focus {
+  outline: 5px solid orange;
 }

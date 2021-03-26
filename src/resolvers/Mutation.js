@@ -5,9 +5,11 @@ const { getUserId } = require('../utils');
 const Mutation = {
   signup:
     async function signup(parent, args, context, info) {
-      if (args.name === '') throw new Error('invalid username');
-      if (args.email === '') throw new Error('invalid email');
-      if (args.password === '') throw new Error('invalid password');
+      if (args.name === '') throw new Error('Notandanafn ógilt');
+      if (args.email === '') throw new Error('Netfang ógilt');
+      if (args.password === '') throw new Error('Lykilorð ógilt');
+      const exists = await context.prisma.user.findUnique({ where: { email: args.email } });
+      if (exists) throw new Error('Notandi þegar skráður');
       const password = await bcrypt.hash(args.password, 10);
       const user = await context.prisma.user.create({ data: { ...args, password } });
       const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
@@ -20,11 +22,11 @@ const Mutation = {
     async function login(parent, args, context, info) {
       const user = await context.prisma.user.findUnique({ where: { email: args.email } });
       if (!user) {
-        throw new Error('No such user found');
+        throw new Error('Notandanafn eða lykilorð vitlaust');
       };
       const valid = await bcrypt.compare(args.password, user.password);
       if (!valid) {
-        throw new Error('Invalid password');
+        throw new Error('Notandanafn eða lykilorð vitlaust');
       };
       const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
       return {
@@ -36,7 +38,7 @@ const Mutation = {
     async function post(parent, args, context, info) {
       const { userId } = context;
       if (!userId) {
-        throw new Error('You have to log in first');
+        throw new Error('Þú verður á skrá þig inn fyrst');
       };
       const newLink = await context.prisma.link.create({
         data: {
@@ -70,7 +72,7 @@ const Mutation = {
       // Er notandi innskráður?
       const userId = getUserId(context);
       if (!userId) {
-        throw new Error('You have to log in first');
+        throw new Error('Þú verður á skrá þig inn fyrst');
       };
       // Hefur notandi veitt þessum link atkvæði áður?
       const vote = await context.prisma.vote.findUnique({
@@ -83,7 +85,7 @@ const Mutation = {
       });
       // Notandi getur ekki veitt link fleiri en eitt atkvæði
       if (Boolean(vote)) {
-        throw new Error(`Already voted for link: ${args.linkId}`);
+        throw new Error(`Búið að greiða þessum link atkvæði: ${args.linkId}`);
       }
       // Búum til nýtt atkvæði með tengsli milli notanda og links
       const newVote = context.prisma.vote.create({

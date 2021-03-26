@@ -32,10 +32,10 @@ const Login = () => {
     name: false,
   });
 
-  const [errorState, setError] = useState({
-    error: false,
+  const [error, setError] = useState({
+    isError: false,
     message: ''
-  });
+  })
   //######################################################## HANDLERS & HELPERS ########################################################
   //######################################################## CLIENT-SIDE VALIDATION ####################################################
   const validatePassword = (password) => {
@@ -51,11 +51,9 @@ const Login = () => {
       case 'name':
         setFormState({ ...formState, name: e.target.value });
         if (isAlpha(e.target.value) && e.target.value.length >= 2) {
-          e.target.classList.remove('invalid');
           setValidationState({ ...validationState, name: true });
         }
         else {
-          e.target.classList.add('invalid');
           setValidationState({ ...validationState, name: false });
         };
         break;
@@ -63,11 +61,9 @@ const Login = () => {
       case 'email':
         setFormState({ ...formState, email: e.target.value });
         if (isEmail(e.target.value)) {
-          e.target.classList.remove('invalid');
           setValidationState({ ...validationState, email: true });
         }
         else {
-          e.target.classList.add('invalid');
           setValidationState({ ...validationState, email: false });
         };
         break;
@@ -75,24 +71,18 @@ const Login = () => {
       case 'password':
         setFormState({ ...formState, password: e.target.value });
         if (validatePassword(e.target.value)) {
-          e.target.classList.remove('invalid');
           setValidationState({ ...validationState, password: true });
           if (e.target.value !== referance.current.value) {
-            referance.current.classList.add('invalid');
             setValidationState({ ...validationState, password: true, passwordConf: false });
           } else {
-            referance.current.classList.remove('invalid');
             setValidationState({ ...validationState, password: true, passwordConf: true });
           }
         }
         else {
-          e.target.classList.add('invalid');
           setValidationState({ ...validationState, password: false });
           if (e.target.value !== referance.current.value) {
-            referance.current.classList.add('invalid');
             setValidationState({ ...validationState, password: false, passwordConf: false });
           } else {
-            referance.current.classList.remove('invalid');
             setValidationState({ ...validationState, password: false, passwordConf: true });
           }
         };
@@ -101,14 +91,11 @@ const Login = () => {
       case 'password2':
         setFormState({ ...formState, passwordConf: e.target.value });
         if (e.target.value === formState.password) {
-          e.target.classList.remove('invalid');
           setValidationState({ ...validationState, passwordConf: true });
         }
         else {
-          e.target.classList.add('invalid');
           setValidationState({ ...validationState, passwordConf: false });
         };
-        console.info("Halló frá password2");
         break;
 
       default:
@@ -117,14 +104,12 @@ const Login = () => {
   };
 
   //######################################################## LOG IN HOOK ########################################################
-  const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION, {
+  const [login, { loading: loginLoading, error: loginError }] = useMutation(LOGIN_MUTATION, {
     variables: {
       email: formState.email,
       password: formState.password
     },
-    onError: (error) => {
-      setError({ ...errorState, error: true, message: "Villa við innskráningu. Notandanafn eða lykilorð vitlaust" });
-    },
+    onError: (error) => setError({ isError: true, message: error.message }),
     onCompleted: ({ login }) => {
       setAuthToken(login.token);
       history.push('/');
@@ -132,15 +117,13 @@ const Login = () => {
   });
   //##############################################################################################################################
   //######################################################## SIGN UP HOOK ########################################################
-  const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION, {
+  const [signup, { loading: signupLoading, error: signupError }] = useMutation(SIGNUP_MUTATION, {
     variables: {
       name: formState.name,
       email: formState.email,
       password: formState.password
     },
-    onError: (error) => {
-      setError({ ...errorState, error: true, message: "Villa við innskráningu." });
-    },
+    onError: (error) => setError({ isError: true, message: error.message }),
     onCompleted: ({ signup }) => {
       setAuthToken(signup.token);
       history.push('/');
@@ -152,10 +135,11 @@ const Login = () => {
 
   return (
     <div>
-      <h4 >{formState.login ? 'Innskráning' : 'Nýskráning'}</h4>
+      <h4 className="form-title" >{formState.login ? 'Innskráning' : 'Nýskráning'}</h4>
       {!formState.login && (
         <SignUpForm
           formState={formState}
+          validationState={validationState}
           setFormState={setFormState}
           onUpdate={handleFormChange}
         />
@@ -163,23 +147,20 @@ const Login = () => {
       {formState.login && (
         <LoginForm formState={formState} setFormState={setFormState} />
       )}
-      <div className="validation">
-        <ul>
-          {!validationState.name && (<li>Nafn má aðeins innihalda stafi. Verður að vera a.m.k. tveir stafir</li>)}
-          {!validationState.email && (<li>Netfang verður að vera gilt.</li>)}
-          {!validationState.password && (<li>Lykilorð verður að vera a.m.k. 8 að lengd, innihalda a.m.k. einn stóran og einn lítinn staf. Má innihalda tákn.</li>)}
-          {!validationState.passwordConf && (<li>Vinsamlegast staðfestu rétt lykiliorð</li>)}
-        </ul>
-      </div>
-      <div>
+
+      <div className="button-group">
         <button
-          className={(true) ? 'button' : 'button invalid'}
+          className={(formState.login ||
+            (validationState.name &&
+              validationState.email &&
+              validationState.password &&
+              validationState.passwordConf)) ? 'button' : 'button hidden'}
           onClick={(e) => {
             if (!formState.login) {
               if (validationState.name && validationState.email && validationState.password && validationState.passwordConf) {
-                return console.info("The form is Valid : )", validationState); // signup
+                return signup();
               } else return console.info("The form is invalid", validationState); // sýna "validation" reglur
-            } else return console.info(`Logging in user ${formState.email}`)//login;
+            } else return login();
           }}
         >
           {formState.login ? 'Innskráning' : 'Nýskráning'}
@@ -187,6 +168,7 @@ const Login = () => {
         <button
           className="button"
           onClick={(e) => {
+            setError({ isError: false, message: '' });
             setFormState({ ...formState, login: !formState.login });
           }}
         >
@@ -194,11 +176,11 @@ const Login = () => {
         </button>
       </div>
 
-      { errorState.error && (
-        <>
+      { error.isError && (
+        <div className="form-error">
           <h3>Villa</h3>
-          <p>{errorState.message}</p>
-        </>
+          <p>{error.message}</p>
+        </div>
       )}
     </div>
   );
