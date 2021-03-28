@@ -5,6 +5,7 @@ import { useMutation } from '@apollo/client';
 import { VOTE_MUTATION } from '../mutations';
 import { FEED_QUERY, FEED_QUERY_TOP } from "../queries";
 import { getQueryVariables, readLinksAndUpdateQuery } from "../helperFunctions";
+import { concat } from 'lodash';
 
 const Link = ({ link, page, index }) => {
   const [authToken, ,] = useAuthToken();
@@ -30,28 +31,26 @@ const Link = ({ link, page, index }) => {
   });
 
   return (
-    <>
-      <div className="links">
-        <div className="links-index">
-          <span> {index + 1}. </span>
-          {authToken && (
-            <div className="links-vote" onClick={vote}>
-              ▲
-            </div>
-          )}
-        </div>
-        <div className="links-content">
-          <div className="links-text">
-            {link.description} ({link.url})
+    <div className="links">
+      <div className="links-index">
+        <span> {index + 1}. </span>
+        {authToken && (
+          <div className="links-vote" onClick={vote}>
+            ▲
+          </div>
+        )}
       </div>
-          {authToken && (
-            <div className="links-info">
-              {link.votes.length} votes | by {link.postedBy.name} {timeDifferenceForDate(link.createdAt)}
-            </div>
-          )}
-        </div>
+      <div className="links-content">
+        <div className="links-text">
+          {link.description} (<a className="links-url" href={"https://" + link.url}>{link.url}</a>)
+          </div>
+        {authToken && (
+          <div className="links-info">
+            {link.votes.length} votes | by {link.postedBy.name} {timeDifferenceForDate(link.createdAt)}
+          </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

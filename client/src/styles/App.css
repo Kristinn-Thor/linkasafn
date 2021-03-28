@@ -110,23 +110,40 @@
 }
 
 /*################################# Efni á síðu /new:page ########################################*/
-
+.links:nth-child(odd) {
+  background: rgb(247, 234, 255);
+}
 /* Linkar e.Links sem notendur pósta á síðuna */
 .links {
   display: flex;
   margin-bottom: 0.2rem;
+  padding: 0.5rem 2rem 0.5rem 2rem;
 }
 
 .links-index {
-  width: 3rem;
+  min-width: 3rem;
   display: flex;
   justify-content: space-between;
   color: #828282;
 }
 
+.links-text {
+  color: rgb(77, 77, 197);
+}
+
+.links-url {
+  font-style: italic;
+  text-decoration: none;
+  color: rgb(77, 77, 197);
+}
+
 .links-vote {
   cursor: pointer;
   padding: 0 0.2rem 0 0.2rem;
+}
+
+.links-vote:hover {
+  color: rgb(250, 162, 31);
 }
 
 .links-info {

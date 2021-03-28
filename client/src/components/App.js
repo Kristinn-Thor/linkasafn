@@ -22,17 +22,15 @@ function App() {
         <div className="App">
           <Header />
           <ErrorBoundary>
-            <div className="background">
-              <Switch>
-                <Route exact path="/" render={() => <Redirect to="/new/1" />} />
-                <Route exact path="/top" component={TopLinks} />
-                <Route exact path="/new/:page" component={LinkList} />
-                <Route exact path="/search" component={Search} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/create" component={CreateLink} />
-                <Route component={Page404} />
-              </Switch>
-            </div>
+            <Switch>
+              <Route exact path="/" render={() => <Redirect to="/new/1" />} />
+              <Route exact path="/top" component={TopLinks} />
+              <Route exact path="/new/:page" component={LinkList} />
+              <Route exact path="/search" component={Search} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/create" component={CreateLink} />
+              <Route component={Page404} />
+            </Switch>
           </ErrorBoundary>
         </div>
       </BrowserRouter>

@@ -38,11 +38,13 @@ const LinkList = () => {
       {error && <h2>Villa við að sækja gögn :(</h2>}
       { data && (
         <>
-          {data.feed.links.map(
-            (link, index) => (
-              <Link key={link.id} link={link} index={index + pageIndex} page={page} />
-            )
-          )}
+          <div className="link-list">
+            {data.feed.links.map(
+              (link, index) => (
+                <Link key={link.id} link={link} index={index + pageIndex} page={page} />
+              )
+            )}
+          </div>
           <div className="pageNav" >
             <div className={`previousPage pageScroll ${page === 1 ? "hidden" : ""}`}
               onClick={() => {

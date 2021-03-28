@@ -13,12 +13,12 @@ const Header = () => {
       <div className="nav">
         <div className="nav-flexGroup" >
           <div className="logo" >Linkasafn</div>
-          <Link className="link" to="/"> new </Link>
+          <Link className="link" to="/"> Nýtt </Link>
           <span>|</span>
-          <Link className="link" to="/top">top</Link>
+          <Link className="link" to="/top">Topp 20</Link>
           <span>|</span>
-          <Link className="link" to="/search">search</Link>
-          {authToken && (<><span>|</span> <Link className="link" to="/create">submit</Link></>)}
+          <Link className="link" to="/search">Leita</Link>
+          {authToken && (<><span>|</span> <Link className="link" to="/create">Setja inn Link</Link></>)}
         </div>
         <div className="logInOut" >
           {authToken ? (
@@ -29,11 +29,11 @@ const Header = () => {
                 history.push('/');
               }}
             >
-              logout
+              Skrá út
             </div>
           ) : (
             <Link to="/login" className="link">
-              login
+              Innskráning
             </Link>
           )}
         </div>

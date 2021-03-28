@@ -36,23 +36,23 @@ const CreateLink = () => {
         createLink();
       }}
     >
-      <div className="form-fields">
-        <input
-          className="input"
-          value={formState.description}
-          onChange={(e) => setFormState({ ...formState, description: e.target.value })}
-          type="text"
-          placeholder="Lýsing á linknum"
-        />
-        <input
-          className="input"
-          value={formState.url}
-          onChange={(e) => setFormState({ ...formState, url: e.target.value })}
-          type="text"
-          placeholder="Vefslóðin á linkinn"
-        />
-      </div>
-      <button className="button" type="submit">Skrá link</button>
+      <input
+        className="input"
+        value={formState.description}
+        onChange={(e) => setFormState({ ...formState, description: e.target.value })}
+        type="text"
+        placeholder="Lýsing á linknum"
+      />
+      <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
+      <input
+        className="input"
+        value={formState.url}
+        onChange={(e) => setFormState({ ...formState, url: e.target.value })}
+        type="text"
+        placeholder="Vefslóðin á linkinn"
+      />
+      <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
+      <button className="button --submit" type="submit">Skrá link</button>
     </form>
   );
 };

@@ -31,10 +31,12 @@ const Search = () => {
           Ok
         </button>
       </div>
-      {data &&
-        data.feed.links.map((link, index) => (
-          <Link key={link.id} link={link} index={index} />
-        ))}
+      <div className="link-search">
+        {data &&
+          data.feed.links.map((link, index) => (
+            <Link key={link.id} link={link} index={index} />
+          ))}
+      </div>
       {results.queryDone && !results.found && <h2>Ekkert fannst :/</h2>}
     </>
   );

@@ -159,7 +159,7 @@ const Login = () => {
             if (!formState.login) {
               if (validationState.name && validationState.email && validationState.password && validationState.passwordConf) {
                 return signup();
-              } else return console.info("The form is invalid", validationState); // sýna "validation" reglur
+              }
             } else return login();
           }}
         >
