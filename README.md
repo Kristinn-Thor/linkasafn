@@ -1,4 +1,4 @@
-# linkasafn
+# Linkasafn
 Vefsíða byggð á Hacker News
 
 ### Tæknistakkur
