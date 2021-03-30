@@ -5,6 +5,7 @@ import { FEED_QUERY } from '../queries';
 import { LINKS_PER_PAGE } from "../constants";
 import { useHistory } from 'react-router';
 import { getQueryVariables } from "../helperFunctions";
+import Loader from './Loader';
 
 const LinkList = () => {
   const history = useHistory();
@@ -31,7 +32,7 @@ const LinkList = () => {
     variables: getQueryVariables(page, 'main-feed')
   });
   */
-  if (loading) return <p>Sæki gögn...</p>
+  if (loading) return <Loader />;
 
   return (
     <>

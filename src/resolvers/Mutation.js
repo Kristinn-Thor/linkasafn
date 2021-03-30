@@ -1,17 +1,25 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { getUserId } = require('../utils');
+const validator = require('validator');
+const { getUserId, validatePassword } = require('../utils');
 
 const Mutation = {
   signup:
     async function signup(parent, args, context, info) {
-      if (args.name === '') throw new Error('Notandanafn ógilt');
-      if (args.email === '') throw new Error('Netfang ógilt');
-      if (args.password === '') throw new Error('Lykilorð ógilt');
+      // --- Validation & Sanitization --- //
+      if (args.name === '' ||
+        !(validator.isAlpha(args.name) && validator.isLength(args.name, { min: 2, max: 50 })))
+        throw new Error('Notandanafn ógilt');
+
+      if (args.email === '' || !validator.isEmail(args.email)) throw new Error('Netfang ógilt');
+      const email = validator.normalizeEmail(args.email);
+
+      if (args.password === '' || !validatePassword(args.password)) throw new Error('Lykilorð ógilt');
+      // __________________________________//
       const exists = await context.prisma.user.findUnique({ where: { email: args.email } });
       if (exists) throw new Error('Notandi þegar skráður');
       const password = await bcrypt.hash(args.password, 10);
-      const user = await context.prisma.user.create({ data: { ...args, password } });
+      const user = await context.prisma.user.create({ data: { ...args, email, password } });
       const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
       return {
         token,
@@ -40,9 +48,15 @@ const Mutation = {
       if (!userId) {
         throw new Error('Þú verður á skrá þig inn fyrst');
       };
+      // --- Validation --- //
+      if (!validator.isURL(args.url)) throw new Error('Linkur þarf að vera URL');
+      let validURL = args.url.replace('http://', '');
+      validURL = validURL.replace('https://', '');
+      validURL = validURL.replace('www.', '');
+      // ______________________
       const newLink = await context.prisma.link.create({
         data: {
-          url: args.url,
+          url: validURL,
           description: args.description,
           postedBy: { connect: { id: userId } },
           votesCount: 0

@@ -38,6 +38,7 @@ body {
   padding: 0.8rem;
   cursor: pointer;
   max-width: 140px;
+  min-width: 100px;
   transition: all 0.2s ease-in-out;
 }
 

@@ -24,7 +24,16 @@ function getUserId(req, authToken) {
   throw new Error('Not authenticated');
 }
 
+const validatePassword = (password) => {
+  // Lykilorð verður að vera 8-200 stafir. Innihalda a.m.k. einn stóran staf og einn lítinn staf. Má innihalda tákn.
+  const isValid = password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,200}$/);
+  if (isValid) return true;
+  return false;
+};
+
+
 module.exports = {
   getTokenPayload,
-  getUserId
+  getUserId,
+  validatePassword
 }

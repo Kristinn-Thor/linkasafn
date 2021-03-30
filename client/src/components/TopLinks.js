@@ -3,6 +3,7 @@ import Link from './Link';
 import { useQuery } from '@apollo/client';
 import { FEED_QUERY_TOP } from '../queries';
 import { useHistory } from 'react-router';
+import Loader from './Loader';
 
 const TopLinks = () => {
   const [found, setFound] = useState(false);
@@ -24,9 +25,10 @@ const TopLinks = () => {
     }
   });
 
+  if (loading) return <Loader />
+
   return (
     <>
-      {loading && <p>Sæki gögn...</p>}
       {error && <h2>Villa við að sækja gögn :(</h2>}
       { data && (
         <div className="top-links">

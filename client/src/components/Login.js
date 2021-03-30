@@ -8,6 +8,7 @@ import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 import isEmail from 'validator/lib/isEmail';
 import isAlpha from 'validator/lib/isAlpha';
+import Loader from "./Loader";
 
 const Login = () => {
   const history = useHistory();
@@ -130,8 +131,8 @@ const Login = () => {
     }
   });
   //##############################################################################################################################
-  if (loginLoading) return <p>Loading...</p>;
-  if (signupLoading) return <p>Loading...</p>;
+  if (loginLoading) return <Loader />;
+  if (signupLoading) return <Loader />;
 
   return (
     <div>

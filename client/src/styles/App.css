@@ -1,25 +1,29 @@
 .App {
-  margin: auto;
+  overflow: hidden;
+  padding-bottom: 2rem;
 }
 
 /*################################# HEADER ########################################*/
 .nav {
   display: flex;
-  justify-content: space-between;
   background-color: rgb(77, 77, 197);
   color: rgb(255, 248, 238);
   padding: 0.6rem;
 }
 
 .nav-flexGroup {
-  display: inline-flex;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .nav span {
   margin: 0 0.5rem 0 0.5rem;
 }
 
-.logo {
+.logo a {
+  color: rgb(255, 248, 238);
+  text-decoration: none;
   font-weight: bold;
   margin-right: 1rem;
 }
@@ -44,8 +48,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  margin: 0 auto 2rem auto;
-  padding-top: 1.5rem;
+  margin: 3rem auto 2rem auto;
   max-width: 400px;
 }
 
@@ -110,6 +113,7 @@
 }
 
 /*################################# Efni á síðu /new:page ########################################*/
+
 .links:nth-child(odd) {
   background: rgb(247, 234, 255);
 }
@@ -132,9 +136,12 @@
 }
 
 .links-url {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
   font-style: italic;
   text-decoration: none;
-  color: rgb(77, 77, 197);
+  color: rgba(77, 77, 197, 0.781);
 }
 
 .links-vote {
@@ -167,4 +174,140 @@
 
 .pageScroll:hover {
   color: rgb(250, 162, 31);
+}
+
+@media (max-width: 800px) {
+  .links {
+    padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  }
+
+  .links-index {
+    min-width: 2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .links {
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  }
+}
+/*################################# Efni á síðu /search ########################################*/
+.search-box {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 2rem auto 2rem auto;
+  min-width: 200px;
+  max-width: 40%;
+}
+
+.search-bar {
+  display: flex;
+  flex-grow: 1;
+  margin-right: 2rem;
+  flex-direction: column;
+  align-content: space-between;
+}
+
+.search-bar input {
+  flex-grow: 1;
+  background: transparent;
+  color: #555353;
+  height: 2rem;
+  font-size: 1.2rem;
+  transition: all ease-in-out 0.3s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-bottom: none;
+  transform: translateY(-0.3rem);
+}
+
+.search-bar input:hover::placeholder {
+  color: rgb(77, 77, 197);
+}
+
+.search-bar-underline {
+  height: 0px;
+  box-shadow: 0px 0px 3px 1px rgb(77, 77, 197);
+}
+
+@media (max-width: 380px) {
+  .search-box {
+    flex-direction: column;
+    margin: 2rem auto 2rem auto;
+  }
+
+  .search-bar {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
+  .search-bar input {
+    text-align: center;
+  }
+}
+
+/*################################# 404 ########################################*/
+
+.page404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10%;
+  padding: 1rem;
+}
+
+.page404 p {
+  margin-bottom: 2rem;
+}
+
+/*################################# Loader ########################################*/
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  background: white;
+}
+
+.dots {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.dots span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(calc(18deg * var(--i)));
+}
+
+.dots span::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  background: rgb(77, 77, 197);
+  border-radius: 50%;
+  box-shadow: 0 0 2px 0 rgb(77, 77, 197), 0 0 5px rgb(77, 77, 197), 0 0 10px rgb(77, 77, 197), 0 0 15px rgb(77, 77, 197),
+    0 0 20px rgb(77, 77, 197), 0 0 25px rgb(77, 77, 197);
+  animation: animate 1s linear infinite;
+  animation-delay: calc(0.05s * var(--i));
+}
+
+@keyframes animate {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
 }

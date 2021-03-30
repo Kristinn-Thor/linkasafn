@@ -42,8 +42,8 @@ const Link = ({ link, page, index }) => {
       </div>
       <div className="links-content">
         <div className="links-text">
-          {link.description} (<a className="links-url" href={"https://" + link.url}>{link.url}</a>)
-          </div>
+          {link.description} - <a className="links-url" href={"https://" + link.url}>{link.url}</a>
+        </div>
         {authToken && (
           <div className="links-info">
             {link.votes.length} votes | by {link.postedBy.name} {timeDifferenceForDate(link.createdAt)}

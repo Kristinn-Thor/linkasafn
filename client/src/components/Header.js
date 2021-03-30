@@ -11,31 +11,33 @@ const Header = () => {
   return (
     <>
       <div className="nav">
+        <div className="logo" ><a href="/">Linkasafn</a></div>
         <div className="nav-flexGroup" >
-          <div className="logo" >Linkasafn</div>
-          <Link className="link" to="/"> Nýtt </Link>
-          <span>|</span>
-          <Link className="link" to="/top">Topp 20</Link>
-          <span>|</span>
-          <Link className="link" to="/search">Leita</Link>
-          {authToken && (<><span>|</span> <Link className="link" to="/create">Setja inn Link</Link></>)}
-        </div>
-        <div className="logInOut" >
-          {authToken ? (
-            <div
-              className="link"
-              onClick={() => {
-                logout();
-                history.push('/');
-              }}
-            >
-              Skrá út
-            </div>
-          ) : (
-            <Link to="/login" className="link">
-              Innskráning
-            </Link>
-          )}
+          <div className="nav-links">
+            <Link className="link" to="/"> Nýtt </Link>
+            <span>|</span>
+            <Link className="link" to="/top">Topp 20</Link>
+            <span>|</span>
+            <Link className="link" to="/search">Leita</Link>
+            {authToken && (<><span>|</span> <Link className="link" to="/create">Setja inn Link</Link></>)}
+          </div>
+          <div className="logInOut" >
+            {authToken ? (
+              <div
+                className="link"
+                onClick={() => {
+                  logout();
+                  history.push('/');
+                }}
+              >
+                Skrá út
+              </div>
+            ) : (
+              <Link to="/login" className="link">
+                Innskráning
+              </Link>
+            )}
+          </div>
         </div>
       </div>
     </>

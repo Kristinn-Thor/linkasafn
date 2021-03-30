@@ -22,38 +22,49 @@ const CreateLink = () => {
       url: formState.url
     },
     onError: (error) => {
+      if (error.message === 'Þú verður á skrá þig inn fyrst' || error.message === 'Linkur þarf að vera URL') {
+        setError({ error: true, message: error.message });
+        return;
+      }
       setError({ ...errorState, error: true });
-      console.info(error);
     },
     onCompleted: () => history.push('/')
   });
 
   return (
-    <form
-      className="form"
-      onSubmit={(e) => {
-        e.preventDefault();
-        createLink();
-      }}
-    >
-      <input
-        className="input"
-        value={formState.description}
-        onChange={(e) => setFormState({ ...formState, description: e.target.value })}
-        type="text"
-        placeholder="Lýsing á linknum"
-      />
-      <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
-      <input
-        className="input"
-        value={formState.url}
-        onChange={(e) => setFormState({ ...formState, url: e.target.value })}
-        type="text"
-        placeholder="Vefslóðin á linkinn"
-      />
-      <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
-      <button className="button --submit" type="submit">Skrá link</button>
-    </form>
+    <>
+      {errorState.error && (
+        <div className="form-error">
+          <h2>Villa</h2>
+          <p>{errorState.message}</p>
+        </div>
+      )}
+      <form
+        className="form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          createLink();
+        }}
+      >
+        <input
+          className="input"
+          value={formState.description}
+          onChange={(e) => setFormState({ ...formState, description: e.target.value })}
+          type="text"
+          placeholder="Lýsing á linknum"
+        />
+        <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
+        <input
+          className="input"
+          value={formState.url}
+          onChange={(e) => setFormState({ ...formState, url: e.target.value })}
+          type="text"
+          placeholder="Vefslóðin á linkinn"
+        />
+        <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
+        <button className="button --submit" type="submit">Skrá link</button>
+      </form>
+    </>
   );
 };
 
