@@ -1,0 +1,7 @@
+Sýnidæmi hvernig setja skal upp .env skrá fyrir verkefnið.
+
+# Notum postgres gagnagrunn
+DATABASE_URL=postgres://notandi:lykilorð@localhost/nafnGagnagrunns
+
+# Jason Web Token
+APP_SECRET="Leindarmál"
