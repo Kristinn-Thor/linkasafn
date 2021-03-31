@@ -1,3 +1,6 @@
+const { gql } = require('apollo-server-express');
+
+const schema = gql`
 
   type Query {
     info: String!
@@ -65,3 +68,7 @@
     asc
     desc
   }
+
+  `;
+
+module.exports = schema;

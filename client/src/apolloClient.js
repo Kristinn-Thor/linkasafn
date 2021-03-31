@@ -3,7 +3,6 @@ import {
   createHttpLink,
   InMemoryCache,
   ApolloLink,
-  offsetLimitPagination
 } from '@apollo/client';
 import { useAuthToken } from './components/AuthToken';
 
@@ -23,10 +22,9 @@ const authMiddleware = (token) => new ApolloLink((operation, forward) => {
 export const useApolloClient = () => {
   // Náum í aðgangslykilinn sem er geymdur í vafraköku
   const [token] = useAuthToken();
-  // devLink: 'http://localhost:4000'
-  // productionLink/Heroku: 'https://linkasafn.herokuapp.com/'
+
   const httpLink = createHttpLink({
-    uri: 'https://linkasafn.herokuapp.com/'
+    uri: 'http://localhost:4000/graphql'
   });
 
   const link = authMiddleware(token).concat(httpLink)

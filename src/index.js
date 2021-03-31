@@ -1,4 +1,5 @@
-const { ApolloServer } = require('apollo-server');
+const express = require('express');
+const { ApolloServer } = require('apollo-server-express');
 const { PrismaClient } = require('@prisma/client');
 require('dotenv').config();
 const Query = require('./resolvers/Query');
@@ -8,8 +9,7 @@ const Vote = require('./resolvers/Vote');
 const Link = require('./resolvers/Link');
 const User = require('./resolvers/User');
 const { getUserId } = require('./utils');
-const fs = require('fs');
-const path = require('path');
+const schema = require('./schema.js');
 
 const resolvers = {
   Query,
@@ -26,10 +26,7 @@ const server = new ApolloServer({
   subscriptions: {
     path: '/subscriptions'
   },
-  typeDefs: fs.readFileSync(
-    path.join(__dirname, 'schema.graphql'),
-    'utf8'
-  ),
+  typeDefs: schema,
   resolvers,
   context: ({ req }) => {
     return {
@@ -40,4 +37,7 @@ const server = new ApolloServer({
   }
 });
 
-server.listen({ port: process.env.PORT || 4000 }).then(({ url }) => console.info(`Server is runnning in ${url}`));
+const app = express();
+server.applyMiddleware({ app, path: '/graphql' });
+
+app.listen({ port: process.env.PORT || 4000 }, () => console.log('Now browse to http://localhost:4000' + server.graphqlPath));
