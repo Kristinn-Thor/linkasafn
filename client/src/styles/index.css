@@ -31,7 +31,7 @@ body {
 .button {
   font-size: 0.8rem;
   font-weight: 100;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   background: rgb(77, 77, 197, 0.9);
   color: white;
   text-align: center;

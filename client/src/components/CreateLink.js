@@ -53,7 +53,7 @@ const CreateLink = () => {
           type="text"
           placeholder="Lýsing á linknum"
         />
-        <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
+        <div className="form-underline --purple"></div>
         <input
           className="input"
           value={formState.url}
@@ -61,7 +61,7 @@ const CreateLink = () => {
           type="text"
           placeholder="Vefslóðin á linkinn"
         />
-        <div className={(true) ? "form-underline" : "form-underline invalid"}></div>
+        <div className="form-underline --purple"></div>
         <button className="button --submit" type="submit">Skrá link</button>
       </form>
     </>

@@ -23,9 +23,10 @@ const authMiddleware = (token) => new ApolloLink((operation, forward) => {
 export const useApolloClient = () => {
   // Náum í aðgangslykilinn sem er geymdur í vafraköku
   const [token] = useAuthToken();
-
+  // devLink: 'http://localhost:4000'
+  // productionLink/Heroku: 'https://linkasafn.herokuapp.com/'
   const httpLink = createHttpLink({
-    uri: 'http://localhost:4000'
+    uri: 'https://linkasafn.herokuapp.com/'
   });
 
   const link = authMiddleware(token).concat(httpLink)

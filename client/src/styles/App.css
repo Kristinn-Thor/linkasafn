@@ -1,20 +1,29 @@
 .App {
-  overflow: hidden;
+  overflow-x: hidden;
   padding-bottom: 2rem;
 }
 
 /*################################# HEADER ########################################*/
 .nav {
+  position: relative;
   display: flex;
+  justify-content: space-between;
   background-color: rgb(77, 77, 197);
   color: rgb(255, 248, 238);
   padding: 0.6rem;
+}
+.hamburger {
+  display: none;
+  background: transparent;
+  font-size: 1.5rem;
+  z-index: 10;
 }
 
 .nav-flexGroup {
   flex-grow: 1;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .nav span {
@@ -24,6 +33,7 @@
 .logo a {
   color: rgb(255, 248, 238);
   text-decoration: none;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-right: 1rem;
 }
@@ -39,8 +49,44 @@
   cursor: pointer;
 }
 
-.logInOut {
-  align-self: flex-end;
+@media (max-width: 600px) {
+  .hamburger {
+    display: block;
+  }
+
+  .nav-flexGroup {
+    opacity: 0;
+    flex-direction: column;
+    position: absolute;
+    top: 54px;
+    right: -100vw;
+    width: calc(100% - 2rem);
+    background-color: rgba(255, 255, 255, 0.938);
+    color: rgb(77, 77, 197);
+    box-shadow: 5px 3px 8px 1px rgba(0, 0, 0, 0.658);
+    padding: 1rem;
+    z-index: 0;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .slideIn {
+    right: 0px;
+    opacity: 1;
+  }
+
+  .link {
+    color: rgb(77, 77, 197);
+  }
+
+  .nav-links {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .link {
+    font-size: 0.8rem;
+  }
 }
 
 /*################################# FORM ########################################*/
@@ -182,7 +228,7 @@
   }
 
   .links-index {
-    min-width: 2rem;
+    min-width: 2.5rem;
   }
 }
 

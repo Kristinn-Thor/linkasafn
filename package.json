@@ -1,7 +1,7 @@
 {
   "name": "hackernews-node",
   "version": "1.0.0",
-  "description": "",
+  "description": "Project based on hackernews website",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",

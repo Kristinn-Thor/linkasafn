@@ -1,1 +1,1 @@
-export const LINKS_PER_PAGE = 3;
+export const LINKS_PER_PAGE = 10;
