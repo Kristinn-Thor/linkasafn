@@ -23,8 +23,14 @@ export const useApolloClient = () => {
   // Náum í aðgangslykilinn sem er geymdur í vafraköku
   const [token] = useAuthToken();
 
+  let uri;
+  if (process.env.NODE_ENV === "production") {
+    uri = '/graphql';
+  } else {
+    uri = 'http://localhost:4000/graphql'
+  }
   const httpLink = createHttpLink({
-    uri: 'http://localhost:4000/graphql'
+    uri: uri
   });
 
   const link = authMiddleware(token).concat(httpLink)

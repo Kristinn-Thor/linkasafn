@@ -10,6 +10,7 @@ const Link = require('./resolvers/Link');
 const User = require('./resolvers/User');
 const { getUserId } = require('./utils');
 const schema = require('./schema.js');
+const path = require('path');
 
 const resolvers = {
   Query,
@@ -38,6 +39,19 @@ const server = new ApolloServer({
 });
 
 const app = express();
+
 server.applyMiddleware({ app, path: '/graphql' });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "../client/build/index.html"));
+  });
+} else {
+  app.use(express.static(path.join(__dirname, "/client/public")));
+  app.get("/*", function (req, res) {
+    res.sendFile(path.join(__dirname, "./client/public/index.html"));
+  });
+}
 
 app.listen({ port: process.env.PORT || 4000 }, () => console.log('Now browse to http://localhost:4000' + server.graphqlPath));
