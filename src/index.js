@@ -43,13 +43,13 @@ const app = express();
 server.applyMiddleware({ app, path: '/graphql' });
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-  app.get("/*", function (req, res) {
-    res.sendFile(path.join(__dirname, "./client/build/index.html"));
+  app.use(express.static("public"));
+  app.get("*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "public", index.html));
   });
 } else {
   app.use(express.static(path.join(__dirname, "/client/public")));
-  app.get("/*", function (req, res) {
+  app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "./client/public/index.html"));
   });
 }
