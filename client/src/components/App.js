@@ -21,17 +21,19 @@ function App() {
       <BrowserRouter>
         <div className="App">
           <Header />
-          <ErrorBoundary>
-            <Switch>
-              <Route exact path="/" render={() => <Redirect to="/new/1" />} />
-              <Route exact path="/top" component={TopLinks} />
-              <Route exact path="/new/:page" component={LinkList} />
-              <Route exact path="/search" component={Search} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/create" component={CreateLink} />
-              <Route component={Page404} />
-            </Switch>
-          </ErrorBoundary>
+          <main className="main">
+            <ErrorBoundary>
+              <Switch>
+                <Route exact path="/" render={() => <Redirect to="/new/1" />} />
+                <Route exact path="/top" component={TopLinks} />
+                <Route exact path="/new/:page" component={LinkList} />
+                <Route exact path="/search" component={Search} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/create" component={CreateLink} />
+                <Route component={Page404} />
+              </Switch>
+            </ErrorBoundary>
+          </main>
         </div>
       </BrowserRouter>
     </ApolloProvider>

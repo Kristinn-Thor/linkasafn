@@ -49,7 +49,7 @@ const SignUpForm = ({ formState, validationState, onUpdate }) => {
         <ul>
           {!validationState.name && (<li>Nafn má aðeins innihalda stafi. Verður að vera a.m.k. tveir stafir</li>)}
           {!validationState.email && (<li>Netfang verður að vera gilt.</li>)}
-          {!validationState.password && (<li>Lykilorð verður að vera a.m.k. 8 að lengd, innihalda a.m.k. einn stóran og einn lítinn staf. Má innihalda tákn.</li>)}
+          {!validationState.password && (<li>Lykilorð verður að vera a.m.k. 8 að lengd og innihalda eitt af eftirfarandi: stóran-staf, lítinn-staf og tölustaf. Má innihalda tákn.</li>)}
           {!validationState.passwordConf && (<li>Vinsamlegast staðfestu rétt lykiliorð</li>)}
         </ul>
       </div>

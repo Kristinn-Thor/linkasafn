@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useRef } from "react";
 import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 import { useAuthToken, useLogout } from './AuthToken';
@@ -7,21 +8,27 @@ const Header = () => {
   const history = useHistory();
   const [authToken, ,] = useAuthToken();
   const logout = useLogout();
-  const [hamburgerState, setHamburgerState] = useState(false);
+  const input = useRef(null);
+
+  const onLinkClick = () => {
+    input.current.checked = false;
+  };
 
   return (
-    <>
-      <div className="nav">
-        <div className="logo" ><a href="/">Linkasafn</a></div>
-        <div className={(hamburgerState) ? "nav-flexGroup slideIn" : "nav-flexGroup"}>
-          <div className="nav-links">
-            <Link className="link" to="/"> Nýtt </Link>
-            <span>|</span>
-            <Link className="link" to="/top">Topp 20</Link>
-            <span>|</span>
-            <Link className="link" to="/search">Leita</Link>
-            {authToken && (<><span>|</span> <Link className="link" to="/create">Setja inn Link</Link></>)}
-          </div>
+    <header className="header">
+      <div className="logo" ><a href="/">Linkasafn</a></div>
+      <input ref={input} type="checkbox" id="nav-toggle" className="nav-toggle" />
+      <nav className="nav">
+        <ul className="nav-links">
+          <Link onClick={onLinkClick} className="link" to="/"> Nýtt </Link>
+          <span>|</span>
+          <Link onClick={onLinkClick} className="link" to="/top">Topp 20</Link>
+          <span>|</span>
+          <Link onClick={onLinkClick} className="link" to="/search">Leita</Link>
+          {authToken && (
+            <><span>|</span> <Link onClick={onLinkClick} className="link" to="/create">Setja inn Link</Link></>
+          )}
+
           <div className="logInOut" >
             {authToken ? (
               <div
@@ -29,26 +36,24 @@ const Header = () => {
                 onClick={() => {
                   logout();
                   history.push('/');
+                  onLinkClick();
                 }}
               >
                 Skrá út
               </div>
             ) : (
-              <Link to="/login" className="link">
+              <Link onClick={onLinkClick} to="/login" className="link">
                 Innskráning
               </Link>
             )}
           </div>
+        </ul>
 
-        </div>
-        <button
-          className="hamburger"
-          onClick={() => {
-            (hamburgerState) ? setHamburgerState(false) : setHamburgerState(true);
-          }}
-        >🍔</button>
-      </div>
-    </>
+      </nav>
+      <label htmlFor="nav-toggle" className="nav-toggle-label">
+        <span>🍔</span>
+      </label>
+    </header>
   );
 };
 

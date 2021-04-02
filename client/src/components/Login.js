@@ -105,12 +105,12 @@ const Login = () => {
   };
 
   //######################################################## LOG IN HOOK ########################################################
-  const [login, { loading: loginLoading, error: loginError }] = useMutation(LOGIN_MUTATION, {
+  const [login, { loading: loginLoading }] = useMutation(LOGIN_MUTATION, {
     variables: {
       email: formState.email,
       password: formState.password
     },
-    onError: (error) => setError({ isError: true, message: error.message }),
+    onError: (login) => setError({ isError: true, message: error.message }),
     onCompleted: ({ login }) => {
       setAuthToken(login.token);
       history.push('/');
@@ -118,7 +118,7 @@ const Login = () => {
   });
   //##############################################################################################################################
   //######################################################## SIGN UP HOOK ########################################################
-  const [signup, { loading: signupLoading, error: signupError }] = useMutation(SIGNUP_MUTATION, {
+  const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION, {
     variables: {
       name: formState.name,
       email: formState.email,
@@ -173,7 +173,7 @@ const Login = () => {
             setFormState({ ...formState, login: !formState.login });
           }}
         >
-          {formState.login ? 'Skrá nýjan reikning?' : 'Aftur á innskráningu'}
+          {formState.login ? 'Skrá nýjan reikning?' : 'Til baka'}
         </button>
       </div>
 

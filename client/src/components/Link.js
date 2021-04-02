@@ -5,7 +5,6 @@ import { useMutation } from '@apollo/client';
 import { VOTE_MUTATION } from '../mutations';
 import { FEED_QUERY, FEED_QUERY_TOP } from "../queries";
 import { getQueryVariables, readLinksAndUpdateQuery } from "../helperFunctions";
-import { concat } from 'lodash';
 
 const Link = ({ link, page, index }) => {
   const [authToken, ,] = useAuthToken();
