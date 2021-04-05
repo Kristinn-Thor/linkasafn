@@ -45,7 +45,7 @@ const Link = ({ link, page, index }) => {
         </div>
         {authToken && (
           <div className="links-info">
-            {link.votes.length} votes | by {link.postedBy.name} {timeDifferenceForDate(link.createdAt)}
+            {link.votes.length} atkvæði | {link.postedBy.name} setti inn link. {timeDifferenceForDate(link.createdAt)}
           </div>
         )}
       </div>

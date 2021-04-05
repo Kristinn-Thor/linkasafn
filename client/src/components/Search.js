@@ -44,7 +44,7 @@ const Search = () => {
             <Link key={link.id} link={link} index={index} />
           ))}
       </div>
-      {results.queryDone && !results.found && <h2>Ekkert fannst :/</h2>}
+      {results.queryDone && !results.found && <h2 className="error-message">Ekkert fannst 💩</h2>}
     </>
   );
 };

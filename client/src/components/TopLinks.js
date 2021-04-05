@@ -29,7 +29,7 @@ const TopLinks = () => {
 
   return (
     <>
-      {error && <h2>Villa við að sækja gögn :(</h2>}
+      {error && <h2 className="error-message">Villa við að sækja gögn :(</h2>}
       { data && (
         <div className="top-links">
           {data.feed.links.map(
@@ -37,7 +37,7 @@ const TopLinks = () => {
               <Link key={link.id} link={link} index={index} isTop={isTop} />
             )
           )}
-          {!found && <h2>Ekkert fannst :/</h2>}
+          {!found && <h2 className="error-message">Ekkert fannst 💩</h2>}
         </div>
       )}
     </>

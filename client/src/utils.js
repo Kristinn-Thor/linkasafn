@@ -8,32 +8,36 @@ function timeDifference(current, previous) {
   const elapsed = current - previous;
 
   if (elapsed < milliSecondsPerMinute / 3) {
-    return 'just now';
+    return 'Rétt í þessu';
   }
 
   if (elapsed < milliSecondsPerMinute) {
-    return 'less than 1 min ago';
+    return 'Fyrir minna en mínútu síðan';
   } else if (elapsed < milliSecondsPerHour) {
     return (
+      'Fyrir ' +
       Math.round(elapsed / milliSecondsPerMinute) +
-      ' min ago'
+      ((Math.round(elapsed / milliSecondsPerMinute) > 1) ? ' mínútum síðan' : ' mínútu síðan')
     );
   } else if (elapsed < milliSecondsPerDay) {
     return (
-      Math.round(elapsed / milliSecondsPerHour) + ' h ago'
+      'Fyrir ' + Math.round(elapsed / milliSecondsPerHour) + ' klst. síðan'
     );
   } else if (elapsed < milliSecondsPerMonth) {
     return (
-      Math.round(elapsed / milliSecondsPerDay) + ' days ago'
+      'Fyrir ' +
+      Math.round(elapsed / milliSecondsPerDay) +
+      ((Math.round(elapsed / milliSecondsPerDay) > 1) ? ' dögum síðan' : ' degi síðan')
     );
   } else if (elapsed < milliSecondsPerYear) {
     return (
-      Math.round(elapsed / milliSecondsPerMonth) + ' mo ago'
+      'Fyrir ' + Math.round(elapsed / milliSecondsPerMonth) +
+      ((Math.round(elapsed / milliSecondsPerMonth) > 1) ? ' mánuðum síðan' : ' mánuði síðan')
     );
   } else {
     return (
-      Math.round(elapsed / milliSecondsPerYear) +
-      ' years ago'
+      'Fyrir ' + Math.round(elapsed / milliSecondsPerYear) +
+      ((Math.round(elapsed / milliSecondsPerYear) > 1) ? ' árum síðan' : ' ári síðan')
     );
   }
 }

@@ -11,6 +11,7 @@ import Search from './Search';
 import ErrorBoundary from './ErrorBoundary';
 import Page404 from './Page404';
 import TopLinks from './TopLinks';
+import Footer from './Footer';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
               </Switch>
             </ErrorBoundary>
           </main>
+          <Footer />
         </div>
       </BrowserRouter>
     </ApolloProvider>

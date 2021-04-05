@@ -110,7 +110,7 @@ const Login = () => {
       email: formState.email,
       password: formState.password
     },
-    onError: (login) => setError({ isError: true, message: error.message }),
+    onError: (error) => setError({ isError: true, message: error.message }),
     onCompleted: ({ login }) => {
       setAuthToken(login.token);
       history.push('/');
