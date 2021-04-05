@@ -1,5 +1,4 @@
-# Frammendinn settur saman með Create React App.
-# Meðfylgjandi 'readme':
+# Frammendinn settur saman með Create React App. <br/> Meðfylgjandi 'readme':
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
