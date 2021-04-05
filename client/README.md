@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Frammendinn settur saman með Create React App. Meðfylgjandi 'readme':
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
