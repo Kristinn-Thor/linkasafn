@@ -14,10 +14,17 @@ const Header = () => {
     input.current.checked = false;
   };
 
+  const onButtonClick = () => {
+    input.current.checked = !input.current.checked;
+  };
+
   return (
     <header className="header">
       <div className="logo" ><a href="/">Linkasafn</a></div>
       <input ref={input} type="checkbox" id="nav-toggle" className="nav-toggle" />
+      <button onClick={onButtonClick} className="nav-toggle-button">
+        <span className="hamburger"></span>
+      </button>
       <nav className="nav">
         <ul className="nav-links">
           <Link onClick={onLinkClick} className="link" to="/"> Nýtt </Link>
@@ -31,8 +38,9 @@ const Header = () => {
 
           <div className="logInOut" >
             {authToken ? (
-              <div
+              <Link
                 className="link"
+                to="/"
                 onClick={() => {
                   logout();
                   history.push('/');
@@ -40,7 +48,7 @@ const Header = () => {
                 }}
               >
                 Skrá út
-              </div>
+              </Link>
             ) : (
               <Link onClick={onLinkClick} to="/login" className="link">
                 Innskráning
@@ -50,9 +58,6 @@ const Header = () => {
         </ul>
 
       </nav>
-      <label htmlFor="nav-toggle" className="nav-toggle-label">
-        <span>🍔</span>
-      </label>
     </header>
   );
 };

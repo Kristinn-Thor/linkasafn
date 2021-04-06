@@ -47,7 +47,7 @@ const LinkList = () => {
             )}
           </div>
           <div className="pageNav" >
-            <div className={`previousPage pageScroll ${page === 1 ? "hidden" : ""}`}
+            <button className={`previousPage pageScroll ${page === 1 ? "hidden" : ""}`}
               onClick={() => {
                 if (page > 1) {
                   history.push(`/new/${page - 1}`);
@@ -55,8 +55,8 @@ const LinkList = () => {
               }}
             >
               Til baka
-            </div>
-            <div className={`nextPage pageScroll ${page < data.feed.count / LINKS_PER_PAGE ? "" : "hidden"}`}
+            </button>
+            <button className={`nextPage pageScroll ${page < data.feed.count / LINKS_PER_PAGE ? "" : "hidden"}`}
               onClick={() => {
                 if (page < data.feed.count / LINKS_PER_PAGE) {
                   history.push(`/new/${page + 1}`);
@@ -64,7 +64,7 @@ const LinkList = () => {
               }}
             >
               Næsta síða
-          </div>
+          </button>
           </div>
 
           {!found && <h2 className="error-message">Engir linkar fundust</h2>}

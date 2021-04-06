@@ -12,7 +12,7 @@ const Footer = () => {
         <ul>
           <li>PostgreSQL Gagnagrunnur</li>
           <li>Prisma fyrir ORM(e. Object–relational mapping)</li>
-          <li>Apollo server/client til þess að útfæra GraphQL</li>
+          <li>Apollo-express server/client til þess að útfæra GraphQL</li>
           <li>React frammendi</li>
         </ul>
       </section>
